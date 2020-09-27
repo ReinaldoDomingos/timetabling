@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Disciplinas CPCX</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <nav>
+        <div class="nav nav-tabs justify-content-center" id="nav-tab" role="tablist">
+            <a class="nav-link active" id="nav-disciplinas-tab" data-toggle="tab" href="#nav-disciplinas" role="tab"
+               aria-controls="nav-home" aria-selected="true">Disciplinas</a>
+            <a class="nav-link" id="nav-grade-professores" data-toggle="tab" href="#nav-professores" role="tab"
+               aria-controls="nav-profile" aria-selected="false">Professores</a>
+            <a class="nav-link" id="nav-grade-horaria-tab" data-toggle="tab" href="#nav-grade-horaria" role="tab"
+               aria-controls="nav-profile" aria-selected="false">Grade horária</a>
+        </div>
+    </nav>
+
+    <div class="mx-5 tab-content">
+        <div class="tab-pane fade show active" id="nav-disciplinas" role="tabpanel"
+             aria-labelledby="nav-disciplinas-tab">
+            <form class="py-5">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="qtd">Quantidade:</label>
+                            <input id="qtd" class="form-control" type="text" v-model="resultados.quantidade" readonly>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Carga:</label>
+                            <input class="form-control" type="text" v-model="resultados.carga" readonly>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Porcentagem:</label>
+                            <input class="form-control" type="text" v-model="resultados.porcentagem" readonly>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group">
+                            <label>C.H. UFMS:</label>
+                            <input class="form-control" type="text" v-model="resultados.ch_ufms" readonly>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Carga Horaria Optativa:</label>
+                            <input class="form-control" type="text" v-model="resultados.carga_horaria_optativa"
+                                   readonly>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="table-responsive-xl">
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>#</th>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>C.H.</th>
+                    </tr>
+                    <tr v-for="(disciplina,index) in disciplinas">
+                        <td>{{index + 1}}</td>
+                        <td>{{disciplina.codigo}}</td>
+                        <td>{{disciplina.nome}}</td>
+                        <td>{{disciplina.cargaHoraria}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="nav-professores" role="tabpanel"
+             aria-labelledby="nav-professores-tab">
+
+            <div class="table-responsive-xl mt-5">
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>#</th>
+                        <th>Código</th>
+                        <th>Nome</th>
+                    </tr>
+                    <tr v-for="(professor,index) in professores">
+                        <td>{{index + 1}}</td>
+                        <td>{{professor.id}}</td>
+                        <td>{{professor.nome}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="nav-grade-horaria" role="tabpanel"
+             aria-labelledby="nav-grade-horaria-tab">
+
+            <div class="table-responsive-xl mt-5">
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>#</th>
+                        <th>Segunda Feira</th>
+                        <th>Terça Feira</th>
+                        <th>Quarta Feira</th>
+                        <th>Quinta Feira</th>
+                        <th>Sexta Feira</th>
+                        <th>Sábado</th>
+                    </tr>
+                    <tr>
+                        <th>2° Semestre</th>
+                        <td>
+                            <b>Tópicos em Programação (0803.000.198-1)</b><br>
+                            <span>{{professores[5].nome}}</span>
+                        </td>
+                        <td>
+                            <b>Algoritmos e Programação II (0803.000.084-5)</b><br>
+                            <span>{{professores[6].nome}}</span>
+                        </td>
+                        <td>
+                            <b>Introdução a Administração (0803.000.204-4)</b><br>
+                            <span>{{professores[4].nome}}</span>
+                        </td>
+                        <td>
+                            <b>Pré Cálculo (0803.000.205-8)</b><br>
+                            <span>{{professores[5].nome}}</span>
+                        </td>
+                        <td>
+                            <b>Algoritmos e Programação II (0803.000.084-5)</b><br>
+                            <span>{{professores[6].nome}}</span>
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            disciplinas: [],
+            professores: [],
+            resultados: {
+                carga: 0,
+                ch_ufms: 3000,
+                carga_horaria_optativa: 238
+            }
+        }, created() {
+            axios.get("http://localhost:8080/api/disciplina")
+                .then(response => this.processarDisciplinas(response.data))
+            axios.get("http://localhost:8080/api/professor")
+                .then(response => this.professores = response.data)
+        },
+        methods: {
+            processarDisciplinas(disciplinas) {
+                this.disciplinas = disciplinas;
+
+                this.resultados.quantidade = this.disciplinas.length;
+
+                let self = this;
+                this.disciplinas.forEach(disciplina => {
+                    self.resultados.carga += disciplina.cargaHoraria;
+                })
+
+                self.resultados.porcentagem = parseFloat(self.resultados.carga) / parseFloat(self.resultados.ch_ufms) * 100;
+            }
+        }
+    })
+</script>
+</html>
