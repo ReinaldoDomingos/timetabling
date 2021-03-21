@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Disciplinas CPCX</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <style>
+        .btn-voltar {
+            display: grid;
+            grid-template-columns: 30px 50px;
+            font-size: 15px;
+            align-items: center;
+            color: #007bff;
+        }
+
+        .btn-voltar:hover {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div id="app" class="container">
+    <form action="#" class="row g-3 needs-validation mt-3" novalidate>
+        <div class="col-12 mb-5">
+            <a href="." class="btn-voltar"><i class="material-icons">keyboard_backspace</i>Voltar</a>
+        </div>
+        <div class="col-6">
+            <label for="ano" class="form-label">Ano</label>
+            <div class="has-validation">
+                <input v-model="gradeHoraria.ano" type="number" class="form-control" id="ano"
+                       placeholder="Digite o ano" min="1000" required>
+                <div class="invalid-feedback">Preencha o ano</div>
+            </div>
+        </div>
+
+        <div class="col-6">
+            <label for="semestre" class="form-label">Ano</label>
+            <select v-model="gradeHoraria.semestreAno" type="number" class="form-control" id="semestre">
+                <option value="PRIMEIRO_SEMESTRE">1° Semestre</option>
+                <option value="SEGUNDO_SEMESTRE">2° Semestre</option>
+            </select>
+        </div>
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-success float-right my-5" @click="salvar()">Salvar</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    let URL_API = "http://localhost:8080/api";
+    new Vue({
+        el: '#app',
+        data: {
+            gradeHoraria: {}
+        },
+        mounted() {
+            let idGradeHoraria = location.search.replace('?', '').replace('idGradeHoraria=', '');
+            if (idGradeHoraria) {
+                let self = this;
+                axios.get(URL_API + '/gradeHoraria/' + idGradeHoraria).then(function (response) {
+                    self.gradeHoraria = response.data;
+                });
+            }
+        },
+        methods: {
+            salvar() {
+                let camposObrigatorios = [
+                    {atributo: 'ano', titulo: 'ano'},
+                    {atributo: 'semestreAno', titulo: 'semestre'}
+                ];
+                if (this.isValidoFormulario(camposObrigatorios)) {
+                    axios.post(URL_API + '/gradeHoraria', this.gradeHoraria).then(function (response) {
+                        location.search = '?idGradeHoraria=' + response.data.id;
+                    }, function (err) {
+                        alert('Erro: ao salvar grade horária: ' + err);
+                    });
+                }
+            },
+            isValidoFormulario(campos) {
+                for (let indice in campos) {
+                    let atributo = campos[indice].atributo;
+                    if (!this.gradeHoraria[atributo]) {
+                        alert('Preencha o campo ' + campos[indice].titulo + '.')
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+        }
+    });
+</script>
+</body>
+</html>
