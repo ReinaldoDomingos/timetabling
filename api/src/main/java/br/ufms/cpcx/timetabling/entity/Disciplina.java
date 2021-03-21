@@ -10,7 +10,7 @@ public class Disciplina {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "DIS_nome", length = 100)
+    @Column(name = "DIS_NOME", length = 100)
     private String nome;
 
     @Column(name = "DIS_CODIGO", length = 14)

@@ -10,7 +10,7 @@ public class Professor {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "PRO_nome", length = 100)
+    @Column(name = "PRO_NOME", length = 100)
     private String nome;
 
     @Column(name = "PRO_CODIGO", length = 14)

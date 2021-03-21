@@ -17,6 +17,9 @@ public class ProfessorService {
     ProfessorRepository professorRepository;
 
     public Professor salvar(Professor professor) {
+        if (professorRepository.existsProfessorByNome(professor.getNome()))
+            throw new RuntimeException("Professor já existe.");
+
         return professorRepository.save(professor);
     }
 
@@ -31,7 +34,7 @@ public class ProfessorService {
 
         ExampleMatcher exampleMatcher = ExampleMatcher.matching().withIgnoreCase();
 
-        Example exemplo = Example.of(professor, exampleMatcher);
+        Example<Professor> exemplo = Example.of(professor, exampleMatcher);
 
 
         return professorRepository.findAll(exemplo);

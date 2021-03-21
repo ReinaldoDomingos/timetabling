@@ -35,7 +35,7 @@ public class DisciplinaService {
 
         ExampleMatcher exampleMatcher = ExampleMatcher.matching().withIgnoreCase();
 
-        Example exemplo = Example.of(disciplina, exampleMatcher);
+        Example<Disciplina> exemplo = Example.of(disciplina, exampleMatcher);
 
 
         return disciplinaRepository.findAll(exemplo);
