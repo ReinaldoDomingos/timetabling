@@ -1,5 +1,6 @@
 package br.ufms.cpcx.timetabling.controller;
 
+import br.ufms.cpcx.timetabling.GenericFilter;
 import br.ufms.cpcx.timetabling.entity.Professor;
 import br.ufms.cpcx.timetabling.service.ProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @Controller
 @RestController
@@ -18,10 +21,16 @@ public class ProfessorController {
 
     @GetMapping
     @ResponseBody
-    public ResponseEntity<?> buscar(@RequestParam(name = "codigo", required = false) Long codigo,
-                                    @RequestParam(name = "nome", required = false) String nome) {
+//    public ResponseEntity<?> buscar(@RequestParam(name = "codigo", required = false) Long codigo,
+//                                    @RequestParam(name = "nome", required = false) String nome) {
+    public ResponseEntity<?> buscar(@RequestParam Map<String, String> filters) {
+        return new ResponseEntity<>(professorService.buscarTodos(GenericFilter.of(filters)), HttpStatus.OK);
+    }
 
-        return new ResponseEntity<>(professorService.buscarTodos(codigo, nome), HttpStatus.OK);
+    @GetMapping("/todos")
+    @ResponseBody
+    public ResponseEntity<?> buscarTodos() {
+        return new ResponseEntity<>(professorService.buscarTodos(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

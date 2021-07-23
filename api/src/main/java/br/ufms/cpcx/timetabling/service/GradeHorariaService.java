@@ -1,21 +1,27 @@
 package br.ufms.cpcx.timetabling.service;
 
+import br.ufms.cpcx.timetabling.GenericFilter;
 import br.ufms.cpcx.timetabling.entity.GradeHoraria;
+import br.ufms.cpcx.timetabling.repository.DisciplinaGradeHorariaRepository;
 import br.ufms.cpcx.timetabling.repository.GradeHorariaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
 public class GradeHorariaService {
 
     @Autowired
-    GradeHorariaRepository gradeHorariaRepository;
+    private GradeHorariaRepository gradeHorariaRepository;
 
-    public List<GradeHoraria> buscarTodos() {
-        return gradeHorariaRepository.findAll();
+    @Autowired
+    private DisciplinaGradeHorariaRepository disciplinaGradeHorariaRepository;
+
+    public Page<GradeHoraria> buscarTodos(GenericFilter filter) {
+        return gradeHorariaRepository.findAll(filter.getPageRequest());
     }
 
     public Optional<GradeHoraria> buscarPorId(Long id) {
@@ -36,7 +42,9 @@ public class GradeHorariaService {
         return gradeHorariaRepository.save(gradeHoraria);
     }
 
+    @Transactional("transactionManager")
     public void deletar(Long id) {
+        disciplinaGradeHorariaRepository.deleteByGradeHorariaId(id);
         gradeHorariaRepository.deleteById(id);
     }
 }

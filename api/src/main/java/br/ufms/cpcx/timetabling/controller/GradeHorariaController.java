@@ -1,5 +1,6 @@
 package br.ufms.cpcx.timetabling.controller;
 
+import br.ufms.cpcx.timetabling.GenericFilter;
 import br.ufms.cpcx.timetabling.entity.Disciplina;
 import br.ufms.cpcx.timetabling.entity.GradeHoraria;
 import br.ufms.cpcx.timetabling.service.DisciplinaGradeHorariaService;
@@ -15,8 +16,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @Controller
 @RestController
@@ -31,8 +35,8 @@ public class GradeHorariaController {
 
     @GetMapping
     @ResponseBody
-    public ResponseEntity<?> buscar() {
-        return new ResponseEntity<>(gradeHorariaService.buscarTodos(), HttpStatus.OK);
+    public ResponseEntity<?> buscar(@RequestParam Map<String, String> filters) {
+        return new ResponseEntity<>(gradeHorariaService.buscarTodos(GenericFilter.of(filters)), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -44,9 +48,9 @@ public class GradeHorariaController {
 
     @GetMapping("/{id}/disciplinas")
     @ResponseBody
-    public ResponseEntity<?> buscarDisciplinas(@PathVariable("id") Long id) {
+    public ResponseEntity<?> buscarDisciplinas(@PathVariable("id") Long id, @RequestParam Map<String, String> filters) {
 
-        return new ResponseEntity<>(disciplinaGradeHorariaService.buscarPorGradeHorariaId(id), HttpStatus.OK);
+        return new ResponseEntity<>(disciplinaGradeHorariaService.buscarPorGradeHorariaId(GenericFilter.of(filters), id), HttpStatus.OK);
     }
 
     @PostMapping

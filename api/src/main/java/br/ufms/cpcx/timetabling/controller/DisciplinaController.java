@@ -1,5 +1,6 @@
 package br.ufms.cpcx.timetabling.controller;
 
+import br.ufms.cpcx.timetabling.GenericFilter;
 import br.ufms.cpcx.timetabling.entity.Disciplina;
 import br.ufms.cpcx.timetabling.service.DisciplinaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @Controller
 @RestController
 @RequestMapping("/api/disciplina")
@@ -27,11 +30,12 @@ public class DisciplinaController {
 
     @GetMapping
     @ResponseBody
-    public ResponseEntity<?> buscar(@RequestParam(name = "codigo", required = false) String codigo,
-                                    @RequestParam(name = "nome", required = false) String nome,
-                                    @RequestParam(name = "cargaHoraria", required = false) Long cargaHoraria) {
+//    public ResponseEntity<?> buscar(@RequestParam(name = "codigo", required = false) String codigo,
+//                                    @RequestParam(name = "nome", required = false) String nome,
+//                                    @RequestParam(name = "cargaHoraria", required = false) Long cargaHoraria) {
+    public ResponseEntity<?> buscar(@RequestParam Map<String, String> filters) {
 
-        return new ResponseEntity<>(disciplinaService.buscarTodos(codigo, nome, cargaHoraria), HttpStatus.OK);
+        return new ResponseEntity<>(disciplinaService.buscarTodos(GenericFilter.of(filters)), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -45,7 +49,6 @@ public class DisciplinaController {
     @ResponseBody
     public ResponseEntity<?> salvar(@RequestBody Disciplina disciplina) {
         try {
-
 
             return new ResponseEntity<>(disciplinaService.salvar(disciplina), HttpStatus.OK);
         } catch (RuntimeException e) {

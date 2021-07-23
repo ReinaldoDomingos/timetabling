@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
-public class ReinaldoApplication {
+public class TimetablingApplication {
 
     @Autowired
 //    @Qualifier("nomeconfiguracao")
@@ -17,7 +17,7 @@ public class ReinaldoApplication {
     private String varComValorConfiguracao;
 
     public static void main(String[] args) {
-        SpringApplication.run(ReinaldoApplication.class, args);
+        SpringApplication.run(TimetablingApplication.class, args);
     }
 
     @GetMapping("/profile")

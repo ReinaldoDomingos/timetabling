@@ -1,6 +1,7 @@
 package br.ufms.cpcx.timetabling.controller;
 
-import br.ufms.cpcx.timetabling.entity.DisciplinaGradeHoraria;
+import br.ufms.cpcx.timetabling.dto.DisciplinaDTO;
+import br.ufms.cpcx.timetabling.exception.GenericException;
 import br.ufms.cpcx.timetabling.service.DisciplinaGradeHorariaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@Controller
 @RestController
 @RequestMapping("/api/disciplinaGradeHoraria")
 public class DisciplinaGradeHorariaController {
@@ -47,8 +47,11 @@ public class DisciplinaGradeHorariaController {
 
     @PutMapping("{id}")
     @ResponseBody
-    public ResponseEntity<?> alterar(@PathVariable("id") Long id, @RequestBody DisciplinaGradeHoraria disciplinaGradeHoraria) {
-
-        return new ResponseEntity<>(disciplinaGradeHorariaService.alterar(id, disciplinaGradeHoraria), HttpStatus.ACCEPTED);
+    public Object alterar(@PathVariable("id") Long id, @RequestBody DisciplinaDTO disciplinaGradeHoraria) {
+        try {
+            return new ResponseEntity<>(disciplinaGradeHorariaService.alterarProfessor(id, disciplinaGradeHoraria), HttpStatus.ACCEPTED);
+        } catch (GenericException exception) {
+            throw exception;
+        }
     }
 }

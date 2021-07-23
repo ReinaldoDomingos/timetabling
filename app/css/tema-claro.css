@@ -1,0 +1,114 @@
+body {
+    background-color: #f9f9f9 !important
+}
+
+/* GRID */
+.caixa {
+    background-color: white !important;
+    padding: 20px 10px 10px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    font-size: 13px;
+}
+
+.caixa tr td, .caixa .form-group label {
+    color: grey !important;
+}
+
+.caixa .btn .material-icons {
+    font-size: 13px;
+    color: grey;
+}
+
+.caixa.formulario label {
+    font-size: 13px !important;
+    color: #aaaaaa !important;
+    margin-bottom: 0;
+    margin-top: 5px;
+}
+
+.caixa.formulario input.form-control, .caixa.formulario select.form-control {
+    font-size: 13px !important;
+}
+
+.caixa {
+    padding: 20px;
+}
+
+.caixa .botao-principal {
+    padding: 7px 18px;
+    font-size: 13px;
+}
+
+.caixa .botao-cancelar {
+    margin-right: 10px;
+    color: grey;
+}
+
+.caixa .titulo-secundario {
+    padding-left: 10px;
+    font-size: 20px;
+    color: grey;
+}
+
+/* Paginação */
+.paginacao {
+    text-align: center;
+}
+
+.pagination {
+    float: left;
+}
+
+.page-item .page-link {
+    border: none;
+    color: black;
+}
+
+.page-item.active .page-link {
+    background-color: grey;
+    border-radius: 50%;
+}
+
+/* Menu */
+
+.menu {
+    background-color: white;
+    height: 60px;
+    -webkit-box-shadow: 0 1px 5px rgb(0 0 0 / 10%);
+    box-shadow: 0 1px 5px rgb(0 0 0 / 10%);
+}
+
+.menu .nav-tabs {
+    height: inherit;
+    align-items: center;
+}
+
+.menu .nav-link {
+    font-weight: 600;
+    font-size: 14px;
+    color: grey;
+}
+
+.menu .nav-link .active {
+    color: #2C454C;
+}
+
+/* Botões */
+.btn-voltar {
+    display: grid;
+    grid-template-columns: 30px 50px;
+    align-items: center;
+    font-size: 15px;
+    color: grey;
+}
+
+.btn-voltar:hover {
+    text-decoration: none;
+    color: grey;
+}
+
+/* Grid */
+.grid .caixa-de-selecao {
+    padding-left: 0;
+}

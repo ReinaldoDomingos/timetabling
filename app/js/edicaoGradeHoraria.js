@@ -1,49 +1,81 @@
+Vue.config.errorHandler = err => {
+    console.log('Exception: ', err)
+}
+
+window.onerror = function (message, source, lineno, colno, error) {
+    console.log('Exception: ', error)
+}
 let URL_API = "http://localhost:8080/api";
-let idGradeHoraria = location.search.replace('?', '').replace('idGradeHoraria=', '');
 
 new Vue({
     el: '#app',
     data: {
-        idGradeHoraria: idGradeHoraria,
         gradeHoraria: {},
         disciplinas: [],
+        visualizando: false,
+        filters: getFilters(),
+        professores: [],
         disciplinaSelecionada: null,
         disciplinasGradeHoraria: [],
-        result: undefined,
-        groupList: [
-            {
-                label: "something",
-                id: 1
-            },
-            {
-                label: "this too",
-                id: 2
-            },
-            {
-                label: "something different",
-                id: 3
-            }
-        ]
+        semestresDS: constantes.ENUMS.SEMESTRE,
+        colunasDisciplinasGradeHoraria: constantes.ESQUEMAS.colunasDisciplinasGradeHoraria,
+        colunasSelecionaveis: []
     },
     mounted() {
-        if (this.idGradeHoraria) {
+        if (this.filters.id) {
             let self = this;
-            axios.get(URL_API + '/gradeHoraria/' + this.idGradeHoraria).then(function (response) {
+            buscarRegistro(URL_API + '/gradeHoraria', this.filters.id).then(function (response) {
                 self.gradeHoraria = response.data;
             });
+            this.buscarDisciplinas();
+            this.buscarProfessores();
             this.buscarDisciplinasGradeHoraria();
-            axios.get(URL_API + '/disciplina').then(response => this.disciplinas = response.data.map(disciplina => gerarDataListOptions(disciplina, 'nome')));
+            this.visualizando = this.filters.acao === 'visualizar';
         }
     },
     methods: {
-        salvar() {
+        voltar() {
+            location.href = 'index.html';
+        },
+        excluirDisciplinaGradeHoraria(disciplinaGradeHoraria) {
+            deletarRegistro(URL_API + '/disciplinaGradeHoraria', disciplinaGradeHoraria.idDisciplinaGradeHoraria).finally(this.buscarDisciplinasGradeHoraria);
+        },
+        salvarDisciplinaGradeHoraria(disciplinaGradeHoraria) {
+            return function () {
+                salvarRegistro(URL_API + '/disciplinaGradeHoraria', disciplinaGradeHoraria, 'idDisciplinaGradeHoraria')
+                    .then(function (reponse) {
+                        console.log(reponse)
+                    })
+                    .catch(mostrarErro);
+            }
+        },
+        buscarDisciplinas(page, size, sort) {
+            this.disciplinas = [];
+            buscarListagem(URL_API + '/disciplina', page ? page : 0, size ? size : 10, sort ? sort : 'nome')
+                .then(response => this.disciplinas = response.data.content.map(disciplina => gerarDataListOptions(disciplina, 'nome')))
+        },
+        adicionarColunaSelecionavel: function () {
+            this.colunasSelecionaveis.push(
+                {
+                    coluna: 'nome',
+                    titulo: 'Professor',
+                    chaveObjeto: 'professor',
+                    lista: this.professores
+                });
+        }, buscarProfessores() {
+            let self = this;
+            buscarListagem(URL_API + '/professor/todos')
+                .then(response => self.professores = response.data)
+                .then(() => this.adicionarColunaSelecionavel(self));
+        },
+        salvarGradeHoraria() {
             let camposObrigatorios = [
                 {atributo: 'ano', titulo: 'ano'},
                 {atributo: 'semestreAno', titulo: 'semestre'}
             ];
             if (this.isValidoFormulario(camposObrigatorios)) {
                 axios.post(URL_API + '/gradeHoraria', this.gradeHoraria).then(function (response) {
-                    location.search = '?idGradeHoraria=' + response.data.id;
+                    location.search = '?id=' + response.data.id;
                 }, function (err) {
                     alert('Erro: ao salvar grade horária: ' + err);
                 });
@@ -53,13 +85,14 @@ new Vue({
             if (this.disciplinaSelecionada && this.disciplinaSelecionada.id) {
                 let self = this;
                 let disciplinaSelecionada = {id: this.disciplinaSelecionada.id};
-                axios.post(`${URL_API}/gradeHoraria/${this.idGradeHoraria}/adicionarDisciplina`, disciplinaSelecionada).then(function () {
+                axios.post(`${URL_API}/gradeHoraria/${this.filters.id}/adicionarDisciplina`, disciplinaSelecionada).then(function () {
                     self.buscarDisciplinasGradeHoraria();
                 });
             }
         },
-        buscarDisciplinasGradeHoraria: function () {
-            axios.get(`${URL_API}/gradeHoraria/${this.idGradeHoraria}/disciplinas`).then(response => this.disciplinasGradeHoraria = response.data);
+        buscarDisciplinasGradeHoraria(page, size, sort) {
+            buscarListagem(URL_API + '/gradeHoraria/' + this.filters.id + '/disciplinas', page ? page : 0, size ? size : 10)
+                .then(response => this.disciplinasGradeHoraria = response.data);
         },
         isValidoFormulario(campos) {
             for (let indice in campos) {

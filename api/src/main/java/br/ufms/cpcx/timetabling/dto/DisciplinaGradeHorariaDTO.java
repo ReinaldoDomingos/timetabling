@@ -10,8 +10,8 @@ public class DisciplinaGradeHorariaDTO {
     private Long id;
 
     private GradeHoraria gradeHoraria;
-
     private Integer numero;
+
 
     private Disciplina disciplina;
 
@@ -24,7 +24,7 @@ public class DisciplinaGradeHorariaDTO {
     public DisciplinaGradeHorariaDTO(DisciplinaGradeHoraria disciplinaGradeHoraria) {
         this.id = disciplinaGradeHoraria.getId();
         this.gradeHoraria = disciplinaGradeHoraria.getGradeHoraria();
-//        this.disciplina = disciplinaGradeHoraria.getDisciplina();
+        this.disciplina = disciplinaGradeHoraria.getDisciplina();
         this.semestre = disciplinaGradeHoraria.getSemestre();
         this.cargaHorariaSemanal = disciplinaGradeHoraria.getCargaHorariaSemanal();
     }

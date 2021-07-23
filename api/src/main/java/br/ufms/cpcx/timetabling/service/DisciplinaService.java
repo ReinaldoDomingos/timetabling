@@ -1,10 +1,12 @@
 package br.ufms.cpcx.timetabling.service;
 
+import br.ufms.cpcx.timetabling.GenericFilter;
 import br.ufms.cpcx.timetabling.entity.Disciplina;
 import br.ufms.cpcx.timetabling.repository.DisciplinaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,18 +29,18 @@ public class DisciplinaService {
         return disciplinaRepository.findAll();
     }
 
-    public List<Disciplina> buscarTodos(String codigo, String nome, Long cargaHoraria) {
-        Disciplina disciplina = new Disciplina();
-        disciplina.setCodigo(codigo);
-        disciplina.setNome(nome);
-        disciplina.setCargaHoraria(cargaHoraria);
+    //    public Page<Disciplina> buscarTodos(String codigo, String nome, Long cargaHoraria) {
+    public Page<Disciplina> buscarTodos(GenericFilter filter) {
+//        Disciplina disciplina = new Disciplina();
+//        disciplina.setCodigo(codigo);
+//        disciplina.setNome(nome);
+//        disciplina.setCargaHoraria(cargaHoraria);
+//
+//        ExampleMatcher exampleMatcher = ExampleMatcher.matching().withIgnoreCase();
+//
+//        Example<Disciplina> exemplo = Example.of(disciplina, exampleMatcher);
 
-        ExampleMatcher exampleMatcher = ExampleMatcher.matching().withIgnoreCase();
-
-        Example<Disciplina> exemplo = Example.of(disciplina, exampleMatcher);
-
-
-        return disciplinaRepository.findAll(exemplo);
+        return disciplinaRepository.findAll(filter.getPageRequest());
     }
 
     public Optional<Disciplina> buscarPorId(Long id) {

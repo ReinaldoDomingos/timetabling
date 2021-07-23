@@ -1,10 +1,10 @@
 package br.ufms.cpcx.timetabling.service;
 
+import br.ufms.cpcx.timetabling.GenericFilter;
 import br.ufms.cpcx.timetabling.entity.Professor;
 import br.ufms.cpcx.timetabling.repository.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,17 +27,17 @@ public class ProfessorService {
         return professorRepository.findAll();
     }
 
-    public List<Professor> buscarTodos(Long codigo, String nome) {
-        Professor professor = new Professor();
-        professor.setCodigo(codigo);
-        professor.setNome(nome);
+    public Page<Professor> buscarTodos(GenericFilter filter) {
+//        Professor professor = new Professor();
+//        professor.setCodigo(codigo);
+//        professor.setNome(nome);
+//
+//        ExampleMatcher exampleMatcher = ExampleMatcher.matching().withIgnoreCase();
+//
+//        Example<Professor> exemplo = Example.of(professor, exampleMatcher);
+//
 
-        ExampleMatcher exampleMatcher = ExampleMatcher.matching().withIgnoreCase();
-
-        Example<Professor> exemplo = Example.of(professor, exampleMatcher);
-
-
-        return professorRepository.findAll(exemplo);
+        return professorRepository.findAll(filter.getPageRequest());
     }
 
     public Optional<Professor> buscarPorId(Long id) {
