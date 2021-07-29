@@ -1,12 +1,10 @@
 package br.ufms.cpcx.timetabling.service;
 
-import br.ufms.cpcx.timetabling.GenericFilter;
 import br.ufms.cpcx.timetabling.entity.Disciplina;
+import br.ufms.cpcx.timetabling.filter.GenericFilter;
 import br.ufms.cpcx.timetabling.repository.DisciplinaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,17 +27,7 @@ public class DisciplinaService {
         return disciplinaRepository.findAll();
     }
 
-    //    public Page<Disciplina> buscarTodos(String codigo, String nome, Long cargaHoraria) {
     public Page<Disciplina> buscarTodos(GenericFilter filter) {
-//        Disciplina disciplina = new Disciplina();
-//        disciplina.setCodigo(codigo);
-//        disciplina.setNome(nome);
-//        disciplina.setCargaHoraria(cargaHoraria);
-//
-//        ExampleMatcher exampleMatcher = ExampleMatcher.matching().withIgnoreCase();
-//
-//        Example<Disciplina> exemplo = Example.of(disciplina, exampleMatcher);
-
         return disciplinaRepository.findAll(filter.getPageRequest());
     }
 

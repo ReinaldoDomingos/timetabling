@@ -1,14 +1,16 @@
 package br.ufms.cpcx.timetabling.service;
 
-import br.ufms.cpcx.timetabling.GenericFilter;
 import br.ufms.cpcx.timetabling.entity.Professor;
+import br.ufms.cpcx.timetabling.filter.GenericFilter;
 import br.ufms.cpcx.timetabling.repository.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProfessorService {
@@ -24,19 +26,12 @@ public class ProfessorService {
     }
 
     public List<Professor> buscarTodos() {
-        return professorRepository.findAll();
+        return professorRepository.findAll().stream()
+                .sorted(Comparator.comparing(Professor::getNome))
+                .collect(Collectors.toList());
     }
 
     public Page<Professor> buscarTodos(GenericFilter filter) {
-//        Professor professor = new Professor();
-//        professor.setCodigo(codigo);
-//        professor.setNome(nome);
-//
-//        ExampleMatcher exampleMatcher = ExampleMatcher.matching().withIgnoreCase();
-//
-//        Example<Professor> exemplo = Example.of(professor, exampleMatcher);
-//
-
         return professorRepository.findAll(filter.getPageRequest());
     }
 

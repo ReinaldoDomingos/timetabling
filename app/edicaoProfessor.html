@@ -24,6 +24,7 @@
         <botao-voltar :funcao="voltar"></botao-voltar>
     </div>
     <form action="#" class="caixa g-3 needs-validation mt-3 formulario" novalidate>
+        <titulo titulo="Professor" :objeto="professor" :visualizando="visualizando"></titulo>
         <div class="row">
             <caixa-de-texto v-show="professor.id" label="Código" :valor="professor" campo="id" :visualizando="true">
             </caixa-de-texto>

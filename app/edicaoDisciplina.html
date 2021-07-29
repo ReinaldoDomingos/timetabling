@@ -25,13 +25,15 @@
         <botao-voltar :funcao="voltar"></botao-voltar>
     </div>
     <form action="#" class="caixa g-3 needs-validation mt-3 formulario" novalidate>
+        <titulo titulo="Disciplina" :objeto="disciplina" :visualizando="visualizando"></titulo>
         <div class="row">
             <caixa-de-texto label="Código" :valor="disciplina" campo="codigo" :visualizando="visualizando">
             </caixa-de-texto>
             <caixa-de-texto label="Nome" :valor="disciplina" campo="nome" :visualizando="visualizando">
             </caixa-de-texto>
             <caixa-de-numero label="Carga Horária" :valor="disciplina"
-                             campo="cargaHoraria" tipo="number" :visualizando="visualizando">
+                             campo="cargaHoraria" tipo="number"
+                             :visualizando="visualizando">
             </caixa-de-numero>
         </div>
 

@@ -1,9 +1,12 @@
-function buscarListagem(url, page, size, sort, filter) {
+function buscarListagem(url, page, size, sort, direction, filter) {
     if (page !== undefined && size !== undefined) {
         url += '?page=' + page + '&size=' + size;
     }
     if (sort) {
         url += '&sort=' + sort;
+    }
+    if (direction) {
+        url += '&direction=' + direction;
     }
     return axios.get(url);
 }

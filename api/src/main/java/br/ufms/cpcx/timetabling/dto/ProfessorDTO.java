@@ -1,9 +1,11 @@
 package br.ufms.cpcx.timetabling.dto;
 
 import br.ufms.cpcx.timetabling.entity.Professor;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class ProfessorDTO {
     private Long id;
     private String nome;

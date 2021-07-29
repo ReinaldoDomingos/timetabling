@@ -1,5 +1,7 @@
 package br.ufms.cpcx.timetabling.entity;
 
+import lombok.Data;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+@Data
 @Entity
 @Table(name = "TB_DISCIPLINA_GRADE_HORARIA")
 public class DisciplinaGradeHoraria {
@@ -34,65 +37,16 @@ public class DisciplinaGradeHoraria {
     @JoinColumn(name = "PRO_ID")
     private Professor professor;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TUR_ID")
+    private Turma turma;
+
     @Column(name = "DGH_SEMESTRE")
     private Integer semestre;
 
     @Column(name = "DGH_CARGA_HORARIA_SEMANAL", length = 14)
     private Long cargaHorariaSemanal;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public GradeHoraria getGradeHoraria() {
-        return gradeHoraria;
-    }
-
-    public void setGradeHoraria(GradeHoraria gradeHoraria) {
-        this.gradeHoraria = gradeHoraria;
-    }
-
-    public Integer getNumero() {
-        return numero;
-    }
-
-    public void setNumero(Integer numero) {
-        this.numero = numero;
-    }
-
-    public Disciplina getDisciplina() {
-        return disciplina;
-    }
-
-    public void setDisciplina(Disciplina disciplina) {
-        this.disciplina = disciplina;
-    }
-
-    public Professor getProfessor() {
-        return professor;
-    }
-
-    public void setProfessor(Professor professor) {
-        this.professor = professor;
-    }
-
-    public Integer getSemestre() {
-        return semestre;
-    }
-
-    public void setSemestre(Integer semestre) {
-        this.semestre = semestre;
-    }
-
-    public Long getCargaHorariaSemanal() {
-        return cargaHorariaSemanal;
-    }
-
-    public void setCargaHorariaSemanal(Long cargaHorariaSemanal) {
-        this.cargaHorariaSemanal = cargaHorariaSemanal;
-    }
+    @Column(name = "DGH_USA_LABORATORIO", length = 14)
+    private Boolean usaLaboratorio;
 }

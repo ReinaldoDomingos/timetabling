@@ -2,9 +2,13 @@ let URL_API = "http://localhost:8080/api";
 new Vue({
     el: '#app',
     data: {
+        turmas: [],
         disciplinas: [],
         professores: [],
         gradesHorarias: [],
+        abaSelecionada: 'disciplinas',
+        abasMenu: constantes.ESQUEMAS.abasMenu,
+        colunasTurmas: constantes.ESQUEMAS.colunasTurmas,
         colunasDisciplinas: constantes.ESQUEMAS.colunasDisciplinas,
         colunasProfessores: constantes.ESQUEMAS.colunasProfessores,
         colunasGradeHorarias: constantes.ESQUEMAS.colunasGradeHorarias,
@@ -14,12 +18,38 @@ new Vue({
             carga_horaria_optativa: 238
         }
     },
-    created() {
-        this.buscarDisciplinas();
-        this.buscarProfessores();
-        this.buscarGradeHorarias();
+    computed: {
+        estiloClasses() {
+            return function (id) {
+                return {
+                    'show active': this.abaSelecionada === id
+                };
+            };
+        }
     },
     methods: {
+        selecionarAba(nomeLista) {
+            this.turmas = [];
+            this.professores = [];
+            this.professores = [];
+            this.gradesHorarias = [];
+            this.abaSelecionada = nomeLista;
+
+            switch (nomeLista) {
+                case 'disciplinas':
+                    this.buscarDisciplinas();
+                    break;
+                case 'professores':
+                    this.buscarProfessores();
+                    break;
+                case 'turmas':
+                    this.buscarTurmas();
+                    break;
+                case 'gradesHorarias':
+                    this.buscarGradeHorarias();
+                    break;
+            }
+        },
         acessarDisciplina(id, visualizar) {
             let link = 'edicaoDisciplina.html';
             if (id) {
@@ -56,6 +86,18 @@ new Vue({
 
             location.href = link
         },
+        acessarTurma(id, visualizar) {
+            let link = 'edicaoTurma.html';
+            if (id) {
+                link += '?id=' + id;
+            }
+
+            if (visualizar) {
+                link += '&acao=visualizar';
+            }
+
+            location.href = link
+        },
         excluirDisciplina(disciplina) {
             deletarRegistro(URL_API + '/disciplina', disciplina.id).finally(this.buscarDisciplinas);
         },
@@ -64,6 +106,9 @@ new Vue({
         },
         excluirGradeHoraria(gradeHoraria) {
             deletarRegistro(URL_API + '/gradeHoraria', gradeHoraria.id).finally(this.buscarGradeHorarias);
+        },
+        excluirTurma(turma) {
+            deletarRegistro(URL_API + '/turma', turma.id).finally(this.buscarTurmas);
         },
         buscarDisciplinas(page, size, sort) {
             this.disciplinas = [];
@@ -76,9 +121,14 @@ new Vue({
                 .then(response => this.professores = response.data);
         },
         buscarGradeHorarias(page, size, sort) {
-            this.professores = [];
-            buscarListagem(URL_API + '/gradeHoraria', page ? page : 0, size ? size : 10, sort ? sort : 'ano')
+            this.gradesHorarias = [];
+            buscarListagem(URL_API + '/gradeHoraria', page ? page : 0, size ? size : 10, sort ? sort : 'ano,semestreAno')
                 .then(response => this.processarGradeHorarias(response.data));
+        },
+        buscarTurmas(page, size, sort) {
+            this.turmas = [];
+            buscarListagem(URL_API + '/turma', page ? page : 0, size ? size : 10, sort ? sort : 'nome')
+                .then(response => this.turmas = response.data);
         },
         processarGradeHorarias(gradeHorarias) {
             this.gradesHorarias = gradeHorarias;

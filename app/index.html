@@ -17,26 +17,15 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="js/api.js"></script>
     <script src="js/constantes.js"></script>
+    <script src="components/inputs.js"></script>
     <script src="components/grid.js"></script>
+    <script src="components/nav.js"></script>
 </head>
 <body>
 <div id="app">
-    <nav class="menu">
-        <div class="nav nav-tabs justify-content-center" id="nav-tab" role="tablist">
-            <a class="nav-link active" id="nav-disciplinas-tab" data-toggle="tab" href="#nav-disciplinas" role="tab"
-               aria-controls="nav-home" aria-selected="true">Disciplinas</a>
-            <a class="nav-link" id="nav-grade-professores" data-toggle="tab" href="#nav-professores" role="tab"
-               aria-controls="nav-profile" aria-selected="false">Professores</a>
-            <a class="nav-link" id="nav-grades-horarias-tab" data-toggle="tab" href="#nav-grades-horarias" role="tab"
-               aria-controls="nav-profile" aria-selected="false">Grades Horárias</a>
-            <a class="nav-link" id="nav-grade-horaria-atual-tab" data-toggle="tab" href="#nav-grade-horaria-atual"
-               role="tab"
-               aria-controls="nav-profile" aria-selected="false">Grade Horária Atual</a>
-        </div>
-    </nav>
-
+    <barra-menu :aba-selecionada="abaSelecionada" :abas="abasMenu" :selecionar-aba="selecionarAba"></barra-menu>
     <div class="mx-5 tab-content">
-        <div class="tab-pane fade show active" id="nav-disciplinas" role="tabpanel"
+        <div v-bind:class="estiloClasses('disciplinas')" class="tab-pane fade" id="nav-disciplinas" role="tabpanel"
              aria-labelledby="nav-disciplinas-tab">
             <grid :lista="disciplinas" :funcao="buscarDisciplinas" :atributos="colunasDisciplinas"
                   :funcao-editar="acessarDisciplina"
@@ -44,35 +33,27 @@
                   is-modo-visualizar="true"></grid>
         </div>
 
-        <div class="tab-pane fade" id="nav-professores" role="tabpanel"
+        <div v-bind:class="estiloClasses('professores')" class="tab-pane fade" id="nav-professores" role="tabpanel"
              aria-labelledby="nav-professores-tab">
             <grid :lista="professores" :funcao="buscarProfessores" :atributos="colunasProfessores"
                   :funcao-editar="acessarProfessor" :funcao-excluir="excluirProfessor"
                   is-modo-visualizar="true"></grid>
         </div>
 
-        <div class="tab-pane fade" id="nav-grades-horarias" role="tabpanel"
+        <div v-bind:class="estiloClasses('turmas')" class="tab-pane fade" id="nav-turmas" role="tabpanel"
+             aria-labelledby="nav-grade-horaria-tab">
+
+            <grid :lista="turmas" :funcao="buscarTurmas" :atributos="colunasTurmas"
+                  :funcao-editar="acessarTurma" :funcao-excluir="excluirTurma"
+                  is-modo-visualizar="true"></grid>
+        </div>
+
+        <div v-bind:class="estiloClasses('gradesHorarias')" class="tab-pane fade" id="nav-grades-horarias" role="tabpanel"
              aria-labelledby="nav-grade-horaria-tab">
 
             <grid :lista="gradesHorarias" :funcao="buscarGradeHorarias" :atributos="colunasGradeHorarias"
-                  :funcao-editar="acessarGradeHoraria" :funcao-excluir="excluirGradeHoraria" is-modo-visualizar="true"></grid>
-
-            <!--            <a href="./edicaoGradeHoraria.html" class="btn btn-primary float-right mb-2">Novo</a>-->
-
-            <!--            <div class="table-responsive-xl mt-5">-->
-            <!--                <table class="table table-bordered table-striped">-->
-            <!--                    <tr>-->
-            <!--                        <th>Ano/Semestre</th>-->
-            <!--                        <th>Ação</th>-->
-            <!--                    </tr>-->
-            <!--                    <tr v-for="(gradeHoraria,index) in gradesHorarias.content">-->
-            <!--                        <td>{{gradeHoraria.ano}}.{{gradeHoraria.semestreAno | filtroSemestre}}</td>-->
-            <!--                        <td><a class="btn btn-primary"-->
-            <!--                               v-bind:href="'./edicaoGradeHoraria.html?idGradeHoraria='+gradeHoraria.id"><i-->
-            <!--                                class="material-icons">edit</i></a></td>-->
-            <!--                    </tr>-->
-            <!--                </table>-->
-            <!--            </div>-->
+                  :funcao-editar="acessarGradeHoraria" :funcao-excluir="excluirGradeHoraria"
+                  is-modo-visualizar="true"></grid>
         </div>
 
         <!--        <div class="tab-pane fade" id="nav-grade-horaria-atual" role="tabpanel"-->

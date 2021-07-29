@@ -1,7 +1,8 @@
-function mostrarErro(error) {
+function getErroFormatado(error) {
     if (error.response) {
-        alert(limparStringDaLista(error.response.data.message));
+        return limparStringDaLista(error.response.data.message);
     }
+    return null;
 }
 
 function limparStringDaLista(texto) {

@@ -10,24 +10,28 @@ Vue.component('grid', {
                 <tr>
                     <th v-for="atributo in atributos">{{atributo.titulo}}</th>
                     <th v-for="atributo in atributosSelecionaveis">{{atributo.titulo}}</th>
-                    <th  v-show="!escoderBototes && (funcaoEditar || funcaoExcluir || isModoVisualizar)">Ações</th>
+                    <th  v-show="!escoderBototes && atributos.length && (funcaoEditar || funcaoExcluir || isModoVisualizar)">Ações</th>
                 </tr>
                 <tr v-for="item in lista.content">
                     <td v-for="atributo in atributos">
-                        <span>{{item[atributo.coluna]}}</span>
+                        <span v-show="!atributo.editavel">{{item[atributo.coluna]}}</span>
+                        <caixa-de-numero v-show="atributo.editavel" :valor="item" :campo="atributo.coluna"></caixa-de-numero>
                     </td>
                     <td v-for="atributo in atributosSelecionaveis">
                         <caixa-de-selecao :on-selecionar="funcaoSalvar(item)" :valor="item" 
-                              v-bind:campo="atributo.chaveObjeto" :valores="atributo.lista" 
+                              v-bind:campo="atributo.chaveObjeto" :lista="atributo.lista" 
                               chave-combo="this" campo-combo="nome">
                         </caixa-de-selecao>
                     </td>
-                    <td v-show="!escoderBototes && (funcaoEditar || funcaoExcluir || isModoVisualizar)">
+                    <td v-show="!escoderBototes && atributos.length && (funcaoEditar || funcaoExcluir || isModoVisualizar)">
                         <a v-show="isModoVisualizar" class="btn" @click="funcaoEditar(item.id, true)">
                             <i class="material-icons">visibility</i>
                         </a>
                         <a v-show="funcaoEditar" class="btn" @click="funcaoEditar(item.id)">
                             <i class="material-icons">edit</i>
+                        </a>
+                        <a v-show="funcaoSalvar" class="btn" @click="funcaoSalvar(item)()">
+                            <i class="material-icons">check</i>
                         </a>
                         <a v-show="funcaoExcluir" class="btn" @click="funcaoExcluir(item)">
                             <i class="material-icons">clear</i>
@@ -57,9 +61,6 @@ Vue.component('grid', {
     </div>
 </div>
 `,
-    computed: {},
-    mounted() {
-    },
     methods: {
         paginaAnterior() {
             if (this.lista.number > 0) {
@@ -76,4 +77,3 @@ Vue.component('grid', {
         }
     }
 });
-

@@ -10,16 +10,21 @@ let URL_API = "http://localhost:8080/api";
 new Vue({
     el: '#app',
     data: {
-        gradeHoraria: {},
         disciplinas: [],
-        visualizando: false,
-        filters: getFilters(),
         professores: [],
+        gradeHoraria: {},
+        visualizando: false,
+        alertaOptions: {tipo: 'ERRO', mensagemAlerta: null},
+        alertaDisciplinasOptions: {tipo: 'ERRO', mensagemAlerta: null},
+        filters: getFilters(),
         disciplinaSelecionada: null,
         disciplinasGradeHoraria: [],
         semestresDS: constantes.ENUMS.SEMESTRE,
+        modalOptions: {isModalAberto: false, titulo: 'Gerar Grade Horária'},
+        restricoesCheckbox: [{titulo: 'Manter disciplina em dias alternados'}],
         colunasDisciplinasGradeHoraria: constantes.ESQUEMAS.colunasDisciplinasGradeHoraria,
-        colunasSelecionaveis: []
+        colunasSelecionaveis: [],
+        isModalAberto: false
     },
     mounted() {
         if (this.filters.id) {
@@ -34,71 +39,98 @@ new Vue({
         }
     },
     methods: {
+        abrirModalGerarGradeHoraria() {
+            this.modalOptions.abrirModal();
+        },
         voltar() {
             location.href = 'index.html';
         },
         excluirDisciplinaGradeHoraria(disciplinaGradeHoraria) {
-            deletarRegistro(URL_API + '/disciplinaGradeHoraria', disciplinaGradeHoraria.idDisciplinaGradeHoraria).finally(this.buscarDisciplinasGradeHoraria);
+            deletarRegistro(URL_API + '/disciplinaGradeHoraria', disciplinaGradeHoraria.idDisciplinaGradeHoraria)
+                .finally(() => this.buscarDisciplinasGradeHoraria(this.disciplinasGradeHoraria.number, this.disciplinasGradeHoraria.size));
         },
         salvarDisciplinaGradeHoraria(disciplinaGradeHoraria) {
+            let self = this;
             return function () {
                 salvarRegistro(URL_API + '/disciplinaGradeHoraria', disciplinaGradeHoraria, 'idDisciplinaGradeHoraria')
-                    .then(function (reponse) {
-                        console.log(reponse)
+                    .catch(response => {
+                        self.alertaDisciplinasOptions.mensagemAlerta = getErroFormatado(response);
                     })
-                    .catch(mostrarErro);
+                    .finally(() => self.buscarDisciplinasGradeHoraria(self.disciplinasGradeHoraria.number, self.disciplinasGradeHoraria.size));
             }
         },
         buscarDisciplinas(page, size, sort) {
             this.disciplinas = [];
-            buscarListagem(URL_API + '/disciplina', page ? page : 0, size ? size : 10, sort ? sort : 'nome')
-                .then(response => this.disciplinas = response.data.content.map(disciplina => gerarDataListOptions(disciplina, 'nome')))
+            buscarListagem(URL_API + '/disciplina/todas')
+                .then(response => this.disciplinas = response.data.map(disciplina => gerarDataListOptions(disciplina, 'nome')))
         },
-        adicionarColunaSelecionavel: function () {
-            this.colunasSelecionaveis.push(
-                {
-                    coluna: 'nome',
-                    titulo: 'Professor',
-                    chaveObjeto: 'professor',
-                    lista: this.professores
-                });
-        }, buscarProfessores() {
+        adicionarColunaSelecionavel(colunaSelecionavel) {
+            this.colunasSelecionaveis.push(colunaSelecionavel);
+        },
+        buscarProfessores() {
             let self = this;
             buscarListagem(URL_API + '/professor/todos')
                 .then(response => self.professores = response.data)
-                .then(() => this.adicionarColunaSelecionavel(self));
+                .then(() => self.adicionarColunaSelecionavel({
+                    coluna: 'nome',
+                    titulo: 'Professor',
+                    chaveObjeto: 'professor',
+                    lista: self.professores
+                }))
+                .finally(self.buscarTurmas);
+        },
+        buscarTurmas() {
+            let self = this;
+            buscarListagem(URL_API + '/turma/todas')
+                .then(response => self.turmas = response.data)
+                .then(() => self.adicionarColunaSelecionavel({
+                    coluna: 'nome',
+                    titulo: 'Turma',
+                    chaveObjeto: 'turma',
+                    lista: self.turmas
+                }));
         },
         salvarGradeHoraria() {
             let camposObrigatorios = [
                 {atributo: 'ano', titulo: 'ano'},
                 {atributo: 'semestreAno', titulo: 'semestre'}
             ];
-            if (this.isValidoFormulario(camposObrigatorios)) {
-                axios.post(URL_API + '/gradeHoraria', this.gradeHoraria).then(function (response) {
-                    location.search = '?id=' + response.data.id;
-                }, function (err) {
-                    alert('Erro: ao salvar grade horária: ' + err);
-                });
+            let self = this;
+            if (self.isValidoFormulario(camposObrigatorios)) {
+                salvarRegistro(URL_API + '/gradeHoraria', self.gradeHoraria)
+                    .then(function (response) {
+                        if (!self.filters.id) {
+                            location.search = '?id=' + response.data.id;
+                        }
+                    })
+                    .catch(() => self.alertaOptions.mensagemAlerta = 'Falha ao salvar Grade Horária.');
             }
         },
         adicionarDisciplina() {
             if (this.disciplinaSelecionada && this.disciplinaSelecionada.id) {
                 let self = this;
                 let disciplinaSelecionada = {id: this.disciplinaSelecionada.id};
-                axios.post(`${URL_API}/gradeHoraria/${this.filters.id}/adicionarDisciplina`, disciplinaSelecionada).then(function () {
-                    self.buscarDisciplinasGradeHoraria();
-                });
+                axios.post(`${URL_API}/gradeHoraria/${this.filters.id}/adicionarDisciplina`, disciplinaSelecionada)
+                    .then(() => self.buscarDisciplinasGradeHoraria(self.disciplinasGradeHoraria.number, self.disciplinasGradeHoraria.size))
+                    .catch(response => self.alertaDisciplinasOptions.mensagemAlerta = getErroFormatado(response));
             }
         },
-        buscarDisciplinasGradeHoraria(page, size, sort) {
-            buscarListagem(URL_API + '/gradeHoraria/' + this.filters.id + '/disciplinas', page ? page : 0, size ? size : 10)
+        buscarDisciplinasGradeHoraria(page, size, sort, direction) {
+            buscarListagem(URL_API + '/gradeHoraria/' + this.filters.id + '/disciplinas', page ? page : 0, size ? size : 5)
                 .then(response => this.disciplinasGradeHoraria = response.data);
+        },
+        buscarTodasDisciplinasGradeHoraria(page, size) {
+            let self = this;
+            self.modalOptions.abrirModal();
+            buscarRegistro(URL_API + '/gradeHoraria/gradeHorariaCompleta', self.filters.id)
+                .then(response => console.log(response.data))
+                .catch(response => self.alertaDisciplinasOptions.mensagemAlerta = getErroFormatado(response));
         },
         isValidoFormulario(campos) {
             for (let indice in campos) {
                 let atributo = campos[indice].atributo;
                 if (!this.gradeHoraria[atributo]) {
-                    alert('Preencha o campo ' + campos[indice].titulo + '.')
+                    this.alertaOptions.mensagemAlerta = 'Preencha o campo ' + campos[indice].titulo + '.';
                     return false;
                 }
             }

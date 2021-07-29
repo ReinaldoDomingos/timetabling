@@ -1,7 +1,7 @@
 package br.ufms.cpcx.timetabling.controller;
 
-import br.ufms.cpcx.timetabling.GenericFilter;
 import br.ufms.cpcx.timetabling.entity.Disciplina;
+import br.ufms.cpcx.timetabling.filter.GenericFilter;
 import br.ufms.cpcx.timetabling.service.DisciplinaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,18 +30,19 @@ public class DisciplinaController {
 
     @GetMapping
     @ResponseBody
-//    public ResponseEntity<?> buscar(@RequestParam(name = "codigo", required = false) String codigo,
-//                                    @RequestParam(name = "nome", required = false) String nome,
-//                                    @RequestParam(name = "cargaHoraria", required = false) Long cargaHoraria) {
     public ResponseEntity<?> buscar(@RequestParam Map<String, String> filters) {
-
         return new ResponseEntity<>(disciplinaService.buscarTodos(GenericFilter.of(filters)), HttpStatus.OK);
+    }
+
+    @GetMapping("/todas")
+    @ResponseBody
+    public ResponseEntity<?> buscarTodas() {
+        return new ResponseEntity<>(disciplinaService.buscarTodos(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<?> buscarPorId(@PathVariable("id") Long id) {
-
         return new ResponseEntity<>(disciplinaService.buscarPorId(id), HttpStatus.OK);
     }
 
@@ -49,7 +50,6 @@ public class DisciplinaController {
     @ResponseBody
     public ResponseEntity<?> salvar(@RequestBody Disciplina disciplina) {
         try {
-
             return new ResponseEntity<>(disciplinaService.salvar(disciplina), HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
@@ -67,7 +67,6 @@ public class DisciplinaController {
     @PutMapping("{id}")
     @ResponseBody
     public ResponseEntity<?> alterar(@PathVariable("id") Long id, @RequestBody Disciplina disciplina) {
-
         return new ResponseEntity<>(disciplinaService.alterar(id, disciplina), HttpStatus.ACCEPTED);
     }
 }

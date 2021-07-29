@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Editar Turma</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="css/tema-claro.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="components/buttons.js"></script>
+    <script src="components/inputs.js"></script>
+</head>
+<body>
+<div id="app" class="container">
+    <div class="col-12 px-0 mb-5 mt-2">
+        <botao-voltar :funcao="voltar"></botao-voltar>
+    </div>
+    <form action="#" class="caixa g-3 needs-validation mt-3 formulario" novalidate>
+        <titulo titulo="Turma" :objeto="turma" :visualizando="visualizando"></titulo>
+        <div class="row">
+            <caixa-de-texto label="Código" :valor="turma" campo="codigo" :visualizando="visualizando">
+            </caixa-de-texto>
+            <caixa-de-texto label="Nome" :valor="turma" campo="nome" :visualizando="visualizando">
+            </caixa-de-texto>
+            <caixa-de-numero label="Semestre" :valor="turma"
+                             campo="semestre" tipo="semestre" :visualizando="visualizando">
+            </caixa-de-numero>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <botao-salvar v-show="!visualizando" :funcao="salvarTurma"></botao-salvar>
+                <botao-cancelar :funcao="voltar"></botao-cancelar>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="js/edicaoTurma.js"></script>
+</body>
+</html>

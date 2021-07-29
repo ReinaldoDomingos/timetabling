@@ -1,6 +1,7 @@
 package br.ufms.cpcx.timetabling.entity;
 
 import br.ufms.cpcx.timetabling.enumaration.ESemestre;
+import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+@Data
 @Entity
 @Table(name = "TB_GRADE_HORARIA")
 public class GradeHoraria {
@@ -22,28 +24,4 @@ public class GradeHoraria {
 
     @Column(name = "GRA_SEMESTRE_ANO")
     private ESemestre semestreAno;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Integer getAno() {
-        return ano;
-    }
-
-    public void setAno(Integer ano) {
-        this.ano = ano;
-    }
-
-    public ESemestre getSemestreAno() {
-        return semestreAno;
-    }
-
-    public void setSemestreAno(ESemestre semestreAno) {
-        this.semestreAno = semestreAno;
-    }
 }

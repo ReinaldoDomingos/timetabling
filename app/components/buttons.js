@@ -18,10 +18,10 @@ Vue.component('botao-cancelar', {
 });
 
 Vue.component('botao-salvar', {
-    props: ['funcao'],
+    props: ['funcao', 'titulo'],
     template: `
     <button type="button" class="btn btn-success botao-principal float-right mt-5"
-     @click="funcao()">
-      Salvar
+     @click="funcao">
+      {{titulo ? titulo : 'Salvar'}}
     </button>`,
 });

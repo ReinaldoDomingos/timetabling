@@ -20,12 +20,14 @@ public interface DisciplinaGradeHorariaRepository extends JpaRepository<Discipli
     @Query("SELECT dgh FROM DisciplinaGradeHoraria dgh WHERE dgh.gradeHoraria.id = ?1")
     Page<DisciplinaDTO> findAllByGradeHorariaId(Long idGradeHoraria, Pageable pageable);
 
+    @Query("SELECT dgh FROM DisciplinaGradeHoraria dgh WHERE dgh.gradeHoraria.id = ?1")
+    List<DisciplinaDTO> findAllByGradeHorariaId(Long idGradeHoraria);
+
     Boolean existsByGradeHorariaIdAndDisciplinaId(Long idDisciplina, Long idGradeHoraria);
 
-    Boolean existsByGradeHorariaIdAndProfessorId(Long idGradeHoraria,Long idProfessor);
+    boolean existsByGradeHorariaIdAndProfessorId(Long idGradeHoraria, Long idProfessor);
 
     void deleteByGradeHorariaId(Long idGradeHoraria);
 
-//    @Query("UPDATE DisciplinaGradeHoraria dgh SET dgh.professor.id = ?2 WHERE dgh.id = ?1 ")
-//    DisciplinaGradeHoraria alterarProfessor(Long idDisciplinaGradeHoraria, Long idProfessor);
+    boolean existsByGradeHorariaIdAndTurmaId(Long idGradeHoraria, Long idTurma);
 }
