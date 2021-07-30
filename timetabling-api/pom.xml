@@ -11,8 +11,8 @@
     <groupId>br.ufms.cpcx.reinaldo</groupId>
     <artifactId>api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>API</name>
-    <description>Demo project for Spring Boot</description>
+    <name>Timetabling API</name>
+    <description>API para geração de Grade Horária Escolar</description>
 
     <properties>
         <java.version>1.8</java.version>
