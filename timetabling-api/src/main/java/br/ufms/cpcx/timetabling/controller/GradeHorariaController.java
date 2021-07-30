@@ -40,6 +40,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 @Controller
 @RestController
@@ -127,7 +128,7 @@ public class GradeHorariaController {
         int pagina = exportarXLS.adicionarPagina("Grade Horária professores");
         exportarXLS.setDados(pagina, grade.getCabecalho(), grade.getHorarios(), grade.gerarGradeHoraria(restricoes), periodo);
 
-        exportarXLS.salvarXLS("api/src/main/resources/teste-0.xlsx");
+        exportarXLS.salvarXLS("timetabling-api/src/main/resources/teste-0.xlsx");
 
         return geradorListaDeConflitos.getEntidades();
 //        return disciplinasTabuladas;
@@ -143,7 +144,8 @@ public class GradeHorariaController {
         if (isNull(disciplinaDTO.getTurma())) {
             throw new GenericException("Possui disciplina(s) em que não selecionou uma turma.");
         }
-        return numero.incrementAndGet() + "\t" + disciplinaDTO.getNome() + "\t" + disciplinaDTO.getProfessor().getNome() + "\t" + disciplinaDTO.getTurma().getSemestre() + "\t" + disciplinaDTO.getCargaHorariaSemanal() + "\t" + (disciplinaDTO.getUsaLaboratorio() ? "Sim" : "Não");
+        Boolean usaLaboratorio = nonNull(disciplinaDTO.getUsaLaboratorio()) && disciplinaDTO.getUsaLaboratorio();
+        return numero.incrementAndGet() + "\t" + disciplinaDTO.getNome() + "\t" + disciplinaDTO.getProfessor().getNome() + "\t" + disciplinaDTO.getTurma().getSemestre() + "\t" + disciplinaDTO.getCargaHorariaSemanal() + "\t" + (usaLaboratorio ? "Sim" : "Não");
     }
 
     private GradeHorariaDTO buscarGradeHorariaDTO(Long idGradeHoraria) {

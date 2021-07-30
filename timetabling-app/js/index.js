@@ -129,6 +129,7 @@ new Vue({
                 .then(response => this.turmas = response.data);
         },
         processarGradeHorarias(gradeHorarias) {
+            this.gradesHorarias = gradeHorarias;
             this.gradesHorarias.content.forEach(gradeHoraria => this.setSemestreAnoGradeHoraria(gradeHoraria));
         },
         setSemestreAnoGradeHoraria(gradeHoraria) {

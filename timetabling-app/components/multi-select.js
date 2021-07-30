@@ -50,7 +50,12 @@ Vue.component('caixa-de-selecao', {
                 this.selecionarOpcaoMultiSelect(item);
             } else {
                 this.opcaoSelecionada = item;
-                this.valor[this.campo] = item;
+                if (this.chaveCombo === 'this') {
+                    this.valor[this.campo] = item;
+                } else {
+                    this.valor[this.campo] = item[this.chaveCombo];
+                }
+
                 this.fecharSelect();
                 if (this.onSelecionar) {
                     this.onSelecionar(this.valor);
@@ -70,6 +75,14 @@ Vue.component('caixa-de-selecao', {
         },
         fecharSelect() {
             this.isSelectAberto = false;
+        }
+    },
+    watch: {
+        valor() {
+            let itensFiltrado = this.lista.filter(item => item[this.chaveCombo] === this.valor[this.campo]);
+            if (itensFiltrado.length) {
+                this.opcaoSelecionada = itensFiltrado[0];
+            }
         }
     }
 });

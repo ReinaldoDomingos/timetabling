@@ -29,7 +29,6 @@ Vue.component('modal-selecionar-restricoes', {
         estiloClasses() {
             return function () {
 
-                console.log(this.options);
                 return {
                     'modal-aberto': this.options.isModalAberto,
                     'show': this.options.isModalAberto
