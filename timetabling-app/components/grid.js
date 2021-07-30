@@ -42,15 +42,15 @@ Vue.component('grid', {
             <nav v-show="lista.size" class="paginacao">
                 <ul class="pagination">
                     <li @click="paginaAnterior()" v-bind:class="{disabled:lista.number===0}" class="page-item">
-                        <a class="page-link">Anterior</a>
+                        <span class="page-link">Anterior</span>
                     </li>
                     <li @click="irPagina(pagina)" class="page-item" v-for="pagina in lista.totalPages"
                         v-bind:class="{active: pagina === lista.number+1}">
-                        <a class="page-link">{{pagina}}</a>
+                        <span class="page-link">{{pagina}}</span>
                     </li>
                     <li @click="proximaPagina()" v-bind:class="{disabled:lista.totalPages===0 || lista.number+1 === lista.totalPages}"
                         class="page-item">
-                        <a class="page-link">Próximo</a>
+                        <span class="page-link">Próximo</span>
                     </li>
                 </ul>
                 <span class="contagem">

@@ -121,17 +121,14 @@ new Vue({
                 .then(response => this.professores = response.data);
         },
         buscarGradeHorarias(page, size, sort) {
-            this.gradesHorarias = [];
             buscarListagem(URL_API + '/gradeHoraria', page ? page : 0, size ? size : 10, sort ? sort : 'ano,semestreAno')
                 .then(response => this.processarGradeHorarias(response.data));
         },
         buscarTurmas(page, size, sort) {
-            this.turmas = [];
             buscarListagem(URL_API + '/turma', page ? page : 0, size ? size : 10, sort ? sort : 'nome')
                 .then(response => this.turmas = response.data);
         },
         processarGradeHorarias(gradeHorarias) {
-            this.gradesHorarias = gradeHorarias;
             this.gradesHorarias.content.forEach(gradeHoraria => this.setSemestreAnoGradeHoraria(gradeHoraria));
         },
         setSemestreAnoGradeHoraria(gradeHoraria) {

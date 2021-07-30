@@ -5,31 +5,33 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Inserir Professores CPCX</title>
+    <title>Inserir Disciplinas CPCX</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
 
 <script>
-    axios.get("http://localhost:3000/professores")
-        .then(response => processarProfessores(response.data));
+    axios.get("resources/db.json")
+        .then(response => pocessarDisciplinas(response.data.estrutura));
 
-    function processarProfessores(dados) {
-        dados.forEach(professor => {
-            inserirProfessor(professor);
+    function pocessarDisciplinas(dados) {
+        dados.forEach(item => {
+            let disciplina = item.disciplina;
+            inserirDisciplina(disciplina);
         });
     }
 
-    function inserirProfessor(professores) {
+    function inserirDisciplina(disciplina) {
         let json = {
-            id: professores.id,
-            nome: professores.nome,
-            codigo: professores.codigo
+            id: disciplina.id,
+            codigo: disciplina.codigo,
+            nome: disciplina.nome,
+            cargaHoraria: disciplina.carga_horaria
         };
 
         var config = {
             method: 'post',
-            url: 'http://localhost:8080/api/professor',
+            url: 'http://localhost:8080/api/disciplina',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'

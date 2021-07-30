@@ -11,13 +11,13 @@ Vue.component('caixa-de-selecao', {
     <div>
         <div class="select">
             <label v-show="label">{{label}}</label>
-            <button @click="toggleSelect" class="btn botao-select item-lista-select">
+            <a  @click="toggleSelect" class="btn botao-select item-lista-select">
                 <span v-show="!isMultiSelect">{{opcaoSelecionada ? opcaoSelecionada[campoCombo] : 'Selecione uma opção'}}</span>
                 <span v-show="isMultiSelect">{{opcoesSelecionadas.length ? opcoesSelecionadas.length + ' itens selecionados' : 'Selecione uma ou mais opções'}}</span>
                 <span class="icone-item-lista-select">
                         <i class="material-icons">expand_more</i>
                 </span>
-            </button>
+            </a>
             <ul v-show="isSelectAberto" class="select lista-select">
                 <li v-bind:class="estiloClasseItem(item)" @click="selecionarOpcao(item)" 
                           v-for="item in lista" class="item-lista-select">
