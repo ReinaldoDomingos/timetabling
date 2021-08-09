@@ -1,5 +1,6 @@
 package br.ufms.cpcx.grasp.utils.xls;
 
+import br.ufms.cpcx.gradehoraria.exception.GenericException;
 import br.ufms.cpcx.grasp.gradehoraria.EPeriodo;
 import com.sun.org.slf4j.internal.Logger;
 import com.sun.org.slf4j.internal.LoggerFactory;
@@ -17,9 +18,11 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -244,5 +247,22 @@ public class ExportarXLS<T> {
                 coluna.setCellStyle(estiloCelula);
                 break;
         }
+    }
+
+    public String gerarBase64() {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            planilha.write(baos);
+            baos.close();
+            return Base64.getEncoder().encodeToString(baos.toByteArray());
+        } catch (Exception exception) {
+            throw new GenericException("Erro ao gerar Relatório!");
+        }
+    }
+
+    public Map<String, String> exportarBase64() {
+        Map<String, String> resp = new HashMap<>();
+        resp.put("relatorio", gerarBase64());
+        return resp;
     }
 }

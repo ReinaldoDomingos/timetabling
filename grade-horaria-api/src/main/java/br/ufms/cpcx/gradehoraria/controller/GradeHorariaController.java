@@ -1,6 +1,13 @@
 package br.ufms.cpcx.gradehoraria.controller;
 
-import br.ufms.cpcx.grasp.conflitos.Entidade;
+import br.ufms.cpcx.gradehoraria.dto.DisciplinaDTO;
+import br.ufms.cpcx.gradehoraria.dto.GradeHorariaDTO;
+import br.ufms.cpcx.gradehoraria.entity.Disciplina;
+import br.ufms.cpcx.gradehoraria.entity.GradeHoraria;
+import br.ufms.cpcx.gradehoraria.exception.GenericException;
+import br.ufms.cpcx.gradehoraria.filter.GenericFilter;
+import br.ufms.cpcx.gradehoraria.service.DisciplinaGradeHorariaService;
+import br.ufms.cpcx.gradehoraria.service.GradeHorariaService;
 import br.ufms.cpcx.grasp.conflitos.GeradorListaDeConflitos;
 import br.ufms.cpcx.grasp.gradehoraria.EPeriodo;
 import br.ufms.cpcx.grasp.gradehoraria.GradeHorariaPlanilha;
@@ -10,14 +17,6 @@ import br.ufms.cpcx.grasp.grasp.impl.MelhorSolucaoDTO;
 import br.ufms.cpcx.grasp.restricoes.ERestricao;
 import br.ufms.cpcx.grasp.utils.StringUtils;
 import br.ufms.cpcx.grasp.utils.xls.ExportarXLS;
-import br.ufms.cpcx.gradehoraria.dto.DisciplinaDTO;
-import br.ufms.cpcx.gradehoraria.dto.GradeHorariaDTO;
-import br.ufms.cpcx.gradehoraria.entity.Disciplina;
-import br.ufms.cpcx.gradehoraria.entity.GradeHoraria;
-import br.ufms.cpcx.gradehoraria.exception.GenericException;
-import br.ufms.cpcx.gradehoraria.filter.GenericFilter;
-import br.ufms.cpcx.gradehoraria.service.DisciplinaGradeHorariaService;
-import br.ufms.cpcx.gradehoraria.service.GradeHorariaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -69,7 +69,7 @@ public class GradeHorariaController {
     @GetMapping("/gradeHorariaCompleta/{id}")
     @ResponseBody
 //    public ResponseEntity<?> buscarGradeHorariaDTOPorId(@PathVariable("id") Long id) {
-    public List<Entidade> buscarGradeHorariaDTOPorId(@PathVariable("id") Long id) throws Exception {
+    public Map<String, String> buscarGradeHorariaDTOPorId(@PathVariable("id") Long id) throws Exception {
 
         String colunasDisciplinasGradeHoraria = StringUtils.getTextoDaLista(asList("Numero", "Disciplina", "Professor", "Semestre", "CHS", "Laboratório")).replaceAll(",", "\t");
         GradeHorariaDTO gradeHorariaDTO = buscarGradeHorariaDTO(id);
@@ -86,7 +86,7 @@ public class GradeHorariaController {
         geradorListaDeConflitos.setColunaSemestre("Semestre");
         geradorListaDeConflitos.setColunaCargaHoraria("CHS");
 
-        geradorListaDeConflitos.lerRegistrosTabuladosNoDTO("teste", asList("Professor"), disciplinasTabuladas);
+        geradorListaDeConflitos.lerRegistrosTabuladosNoDTO("teste", Collections.singletonList("Professor"), disciplinasTabuladas);
 
         try {
             geradorListaDeConflitos.adicionarRestricaoColuna("Semestre");
@@ -128,9 +128,9 @@ public class GradeHorariaController {
         int pagina = exportarXLS.adicionarPagina("Grade Horária professores");
         exportarXLS.setDados(pagina, grade.getCabecalho(), grade.getHorarios(), grade.gerarGradeHoraria(restricoes), periodo);
 
-        exportarXLS.salvarXLS("timetabling-api/src/main/resources/teste-0.xlsx");
+        return exportarXLS.exportarBase64();
 
-        return geradorListaDeConflitos.getEntidades();
+//        return geradorListaDeConflitos.getEntidades();
 //        return disciplinasTabuladas;
 
 //        return colunasDisciplinasGradeHoraria;

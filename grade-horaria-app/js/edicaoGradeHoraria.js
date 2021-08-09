@@ -116,6 +116,7 @@ new Vue({
             let self = this;
             self.modalOptions.abrirModal();
             buscarRegistro(URL_API + '/gradeHoraria/gradeHorariaCompleta', self.filters.id)
+                .then(response => exportarXls('grade-horaria', response.data))
                 .catch(response => self.alertaDisciplinasOptions.mensagemAlerta = getErroFormatado(response));
         },
         isValidoFormulario(campos) {

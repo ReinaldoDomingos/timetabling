@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>br.ufms.cpcx.reinaldo</groupId>
-    <artifactId>api</artifactId>
+    <artifactId>grade-horaria-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Timetabling API</name>
     <description>API para geração de Grade Horária Escolar</description>
