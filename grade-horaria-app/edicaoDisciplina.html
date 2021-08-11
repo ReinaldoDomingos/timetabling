@@ -17,14 +17,16 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="js/api.js"></script>
     <script src="components/buttons.js"></script>
+    <script src="components/alert.js"></script>
     <script src="components/inputs.js"></script>
+    <script src="js/constantes.js"></script>
+    <script src="utils/erro-utils.js"></script>
 </head>
 <body>
 <div id="app" class="container">
-    <div class="col-12 px-0 mb-5 mt-2">
-        <botao-voltar :funcao="voltar"></botao-voltar>
-    </div>
+    <botao-voltar :funcao="voltar"></botao-voltar>
     <form action="#" class="caixa g-3 needs-validation mt-3 formulario" novalidate>
+        <caixa-de-alerta :alerta-options="alertaOptions"></caixa-de-alerta>
         <titulo titulo="Disciplina" :objeto="disciplina" :visualizando="visualizando"></titulo>
         <div class="row">
             <caixa-de-texto label="Código" :valor="disciplina" campo="codigo" :visualizando="visualizando">

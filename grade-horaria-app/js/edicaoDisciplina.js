@@ -1,4 +1,4 @@
-let URL_API = "http://localhost:8080/api";
+let URL_API = "http://localhost:8080/gradehoraria-api";
 
 new Vue({
     el: '#app',
@@ -7,6 +7,7 @@ new Vue({
         disciplina: {},
         visualizando: false,
         filters: getFilters(),
+        alertaOptions: criarAlertaOptions()
     },
     mounted() {
         if (this.filters.id) {
@@ -30,7 +31,8 @@ new Vue({
                     if (!self.filters.id) {
                         location.search += 'id=' + self.disciplina.id;
                     }
-                });
+                })
+                .catch(response => self.alertaOptions.mensagemAlerta = getErroFormatado(response));
         }
     }
 });

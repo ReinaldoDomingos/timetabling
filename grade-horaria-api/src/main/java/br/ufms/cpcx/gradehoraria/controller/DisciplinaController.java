@@ -1,11 +1,11 @@
 package br.ufms.cpcx.gradehoraria.controller;
 
+import br.ufms.cpcx.gradehoraria.dto.DisciplinaDTO;
 import br.ufms.cpcx.gradehoraria.entity.Disciplina;
 import br.ufms.cpcx.gradehoraria.filter.GenericFilter;
 import br.ufms.cpcx.gradehoraria.service.DisciplinaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,55 +18,50 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
 @RestController
-@RequestMapping("/api/disciplina")
+@RequestMapping("/gradehoraria-api/disciplina")
 public class DisciplinaController {
 
     @Autowired
-    DisciplinaService disciplinaService;
+    private DisciplinaService disciplinaService;
 
     @GetMapping
     @ResponseBody
-    public ResponseEntity<?> buscar(@RequestParam Map<String, String> filters) {
-        return new ResponseEntity<>(disciplinaService.buscarTodos(GenericFilter.of(filters)), HttpStatus.OK);
+    public Page<DisciplinaDTO> buscarTodas(@RequestParam Map<String, String> filters) {
+        return disciplinaService.buscarTodas(GenericFilter.of(filters));
     }
 
     @GetMapping("/todas")
     @ResponseBody
-    public ResponseEntity<?> buscarTodas() {
-        return new ResponseEntity<>(disciplinaService.buscarTodos(), HttpStatus.OK);
+    public List<DisciplinaDTO> buscarTodas() {
+        return disciplinaService.buscarTodas();
     }
 
     @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<?> buscarPorId(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(disciplinaService.buscarPorId(id), HttpStatus.OK);
+    public DisciplinaDTO buscarPorId(@PathVariable("id") Long id) {
+        return disciplinaService.buscarPorId(id);
     }
 
     @PostMapping
     @ResponseBody
-    public ResponseEntity<?> salvar(@RequestBody Disciplina disciplina) {
-        try {
-            return new ResponseEntity<>(disciplinaService.salvar(disciplina), HttpStatus.OK);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-        }
+    public DisciplinaDTO salvar(@RequestBody DisciplinaDTO disciplinaDTO) {
+        return disciplinaService.salvar(disciplinaDTO);
     }
 
     @DeleteMapping("{id}")
     @ResponseBody
-    public ResponseEntity<?> deletar(@PathVariable("id") Long id) {
+    public void deletar(@PathVariable("id") Long id) {
         disciplinaService.deletar(id);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("{id}")
     @ResponseBody
-    public ResponseEntity<?> alterar(@PathVariable("id") Long id, @RequestBody Disciplina disciplina) {
-        return new ResponseEntity<>(disciplinaService.alterar(id, disciplina), HttpStatus.ACCEPTED);
+    public DisciplinaDTO alterar(@PathVariable("id") Long id, @RequestBody Disciplina disciplina) {
+        return disciplinaService.alterar(id, disciplina);
     }
 }

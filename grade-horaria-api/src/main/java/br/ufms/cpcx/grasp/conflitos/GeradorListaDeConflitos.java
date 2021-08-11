@@ -1,5 +1,6 @@
 package br.ufms.cpcx.grasp.conflitos;
 
+import br.ufms.cpcx.gradehoraria.exception.GenericException;
 import br.ufms.cpcx.grasp.conflitos.exception.ColunaInexistentException;
 import br.ufms.cpcx.grasp.utils.StringUtils;
 import br.ufms.cpcx.grasp.utils.txt.ExportarTxt;
@@ -88,14 +89,13 @@ public class GeradorListaDeConflitos {
                 adicionarEntidades(linhas.get(i++));
             }
 
-            if(colunasProfessor.size()>1){
+            if (colunasProfessor.size() > 1) {
                 juntarColunas("Professor", colunasProfessor.get(0), colunasProfessor.get(1));
             }
             Map<String, List<Entidade>> aulasPeriodoParcialPorSemestre = this.entidades.stream()
                     .filter(entidade -> entidade.getCargaHoraria().compareTo(4) < 0).collect(Collectors.groupingBy(Entidade::getSemestre));
 
             for (Map.Entry<String, List<Entidade>> entry : aulasPeriodoParcialPorSemestre.entrySet()) {
-                String semestre = entry.getKey();
                 List<Entidade> entidadesNoSemestre = entry.getValue();
                 while (entidadesNoSemestre.size() > 2) {
                     Entidade disciplina1 = entidadesNoSemestre.remove(0);
@@ -123,9 +123,8 @@ public class GeradorListaDeConflitos {
         System.out.println("-----------------Leitura arquivo finalizada---------------------");
     }
 
-    public void lerRegistrosTabuladosNoDTO(String nomeArquivo, List<String> colunasProfessor, List<String> linhas) throws Exception {
+    public void lerRegistrosTabuladosNoDTO(List<String> colunasProfessor, List<String> linhas) throws Exception {
         System.out.println("-------------------------------------------------------");
-        setNomeArquivo(nomeArquivo);
 
         this.cabecalho = gerarListaAtributos(linhas.get(0));
 
@@ -137,7 +136,7 @@ public class GeradorListaDeConflitos {
                 adicionarEntidades(linhas.get(i++));
             }
 
-            if(colunasProfessor.size()>1){
+            if (colunasProfessor.size() > 1) {
                 juntarColunas("Professor", colunasProfessor.get(0), colunasProfessor.get(1));
             }
 
@@ -145,7 +144,6 @@ public class GeradorListaDeConflitos {
                     .filter(entidade -> entidade.getCargaHoraria().compareTo(4) < 0).collect(Collectors.groupingBy(Entidade::getSemestre));
 
             for (Map.Entry<String, List<Entidade>> entry : aulasPeriodoParcialPorSemestre.entrySet()) {
-                String semestre = entry.getKey();
                 List<Entidade> entidadesNoSemestre = entry.getValue();
                 while (entidadesNoSemestre.size() > 2) {
                     Entidade disciplina1 = entidadesNoSemestre.remove(0);
@@ -188,7 +186,9 @@ public class GeradorListaDeConflitos {
 
         if (valores.length == 0) return;
 
-        int cargaHoraria = Integer.parseInt(valores[this.cabecalho.indexOf(this.colunaCargaHoraria)]);
+        String valor = validarCargaHoraria(valores[this.cabecalho.indexOf(this.colunaCargaHoraria)]);
+
+        int cargaHoraria = Integer.parseInt(valor);
 
         if (isNull(this.colunaCargaHorariaPratica)) {
             adicionarEntidades(valores, cargaHoraria);
@@ -233,6 +233,13 @@ public class GeradorListaDeConflitos {
             }
 */
         }
+    }
+
+    private String validarCargaHoraria(String valor) {
+        if (isNull(valor) || valor.equals("null")) {
+            throw new GenericException("Preencha o campo Carga Horária.");
+        }
+        return valor;
     }
 
     private void adicionarEntidades(String[] valores, int cargaHoraria) {

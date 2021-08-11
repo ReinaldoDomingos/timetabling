@@ -1,6 +1,8 @@
 package br.ufms.cpcx.gradehoraria.service;
 
+import br.ufms.cpcx.gradehoraria.dto.GradeHorariaDTO;
 import br.ufms.cpcx.gradehoraria.entity.GradeHoraria;
+import br.ufms.cpcx.gradehoraria.exception.GenericException;
 import br.ufms.cpcx.gradehoraria.filter.GenericFilter;
 import br.ufms.cpcx.gradehoraria.repository.DisciplinaGradeHorariaRepository;
 import br.ufms.cpcx.gradehoraria.repository.GradeHorariaRepository;
@@ -18,31 +20,43 @@ public class GradeHorariaService {
     @Autowired
     private DisciplinaGradeHorariaRepository disciplinaGradeHorariaRepository;
 
-    public Page<GradeHoraria> buscarTodos(GenericFilter filter) {
-        return gradeHorariaRepository.findAll(filter.getPageRequest());
+    public Page<GradeHorariaDTO> buscarTodos(GenericFilter filter) {
+        return gradeHorariaRepository.findAll(filter.getPageRequest()).map(GradeHorariaDTO::new);
     }
 
-    public GradeHoraria buscarPorId(Long id) {
-        return gradeHorariaRepository.buscarPorId(id);
+    public GradeHorariaDTO buscarPorId(Long id) {
+        GradeHoraria gradeHorariaSalva = gradeHorariaRepository.buscarPorId(id);
+
+        return new GradeHorariaDTO(gradeHorariaSalva);
     }
 
-    public GradeHoraria salvar(GradeHoraria gradeHoraria) {
-        if (gradeHorariaRepository.existsGradeHorariaByAnoAndSemestreAno(gradeHoraria.getAno(), gradeHoraria.getSemestreAno()))
-            throw new RuntimeException("Grade Horária já existe.");
+    public GradeHorariaDTO salvar(GradeHorariaDTO gradeHorariaDTO) {
+        if (existeGradeHorariaIgual(gradeHorariaDTO.getGradeHoraria()))
+            throw new GenericException("Grade Horária já existe.");
 
-        return gradeHorariaRepository.save(gradeHoraria);
+        return salvarGradeHoraria(gradeHorariaDTO);
     }
 
-    public Object alterar(Long id, GradeHoraria gradeHoraria) {
-        if (!id.equals(gradeHoraria.getId()))
-            throw new RuntimeException("Erro ao atualizar o registro.");
+    public GradeHorariaDTO alterar(Long id, GradeHorariaDTO gradeHorariaDTO) {
+        if (!id.equals(gradeHorariaDTO.getId()))
+            throw new GenericException("Erro ao atualizar o registro.");
 
-        return gradeHorariaRepository.save(gradeHoraria);
+        return salvarGradeHoraria(gradeHorariaDTO);
+    }
+
+    private GradeHorariaDTO salvarGradeHoraria(GradeHorariaDTO gradeHoraria) {
+        GradeHoraria gradeHorariaSalva = gradeHorariaRepository.save(gradeHoraria.getGradeHoraria());
+
+        return new GradeHorariaDTO(gradeHorariaSalva);
     }
 
     @Transactional("transactionManager")
     public void deletar(Long id) {
         disciplinaGradeHorariaRepository.deleteByGradeHorariaId(id);
         gradeHorariaRepository.deleteById(id);
+    }
+
+    private boolean existeGradeHorariaIgual(GradeHoraria gradeHoraria) {
+        return gradeHorariaRepository.existsGradeHorariaByAnoAndSemestreAno(gradeHoraria.getAno(), gradeHoraria.getSemestreAno());
     }
 }

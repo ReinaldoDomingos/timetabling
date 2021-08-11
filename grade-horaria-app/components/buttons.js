@@ -1,7 +1,7 @@
 Vue.component('botao-voltar', {
     props: ['funcao'],
     template: `
-    <div class="col-12 px-0 mb-5 mt-2">
+    <div class="col-12 px-0 my-2">
         <a @click="funcao()" class="btn-voltar">
             <i class="material-icons">keyboard_backspace</i>Voltar
         </a>

@@ -1,11 +1,10 @@
 package br.ufms.cpcx.gradehoraria.controller;
 
-import br.ufms.cpcx.gradehoraria.entity.Professor;
+import br.ufms.cpcx.gradehoraria.dto.ProfessorDTO;
 import br.ufms.cpcx.gradehoraria.filter.GenericFilter;
 import br.ufms.cpcx.gradehoraria.service.ProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,51 +17,50 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
 @RestController
-@RequestMapping("/api/professor")
+@RequestMapping("/gradehoraria-api/professor")
 public class ProfessorController {
 
     @Autowired
-    ProfessorService professorService;
+    private ProfessorService professorService;
 
     @GetMapping
     @ResponseBody
-    public ResponseEntity<?> buscar(@RequestParam Map<String, String> filters) {
-        return new ResponseEntity<>(professorService.buscarTodos(GenericFilter.of(filters)), HttpStatus.OK);
+    public Page<ProfessorDTO> buscar(@RequestParam Map<String, String> filters) {
+        return professorService.buscarTodos(GenericFilter.of(filters));
     }
 
     @GetMapping("/todos")
     @ResponseBody
-    public ResponseEntity<?> buscarTodos() {
-        return new ResponseEntity<>(professorService.buscarTodos(), HttpStatus.OK);
+    public List<ProfessorDTO> buscarTodos() {
+        return professorService.buscarTodos();
     }
 
     @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<?> buscarPorId(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(professorService.buscarPorId(id), HttpStatus.OK);
+    public ProfessorDTO buscarPorId(@PathVariable("id") Long id) {
+        return professorService.buscarPorId(id);
     }
 
     @PostMapping
     @ResponseBody
-    public ResponseEntity<?> salvar(@RequestBody Professor professor) {
-        return new ResponseEntity<>(professorService.salvar(professor), HttpStatus.OK);
+    public ProfessorDTO salvar(@RequestBody ProfessorDTO professorDTO) {
+        return professorService.salvar(professorDTO);
     }
 
     @DeleteMapping("{id}")
     @ResponseBody
-    public ResponseEntity<?> deletar(@PathVariable("id") Long id) {
+    public void deletar(@PathVariable("id") Long id) {
         professorService.deletar(id);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("{id}")
     @ResponseBody
-    public ResponseEntity<?> alterar(@PathVariable("id") Long id, @RequestBody Professor professor) {
-        return new ResponseEntity<>(professorService.alterar(id, professor), HttpStatus.ACCEPTED);
+    public ProfessorDTO alterar(@PathVariable("id") Long id, @RequestBody ProfessorDTO professorDTO) {
+        return professorService.alterar(id, professorDTO);
     }
 }

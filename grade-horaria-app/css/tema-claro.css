@@ -45,7 +45,7 @@ body {
 }
 
 .caixa .titulo-secundario {
-    padding-left: 10px;
+    padding-left: 0;
     font-size: 20px;
     color: grey;
 }
@@ -193,4 +193,10 @@ body {
     width: 100vw;
     left: 0;
     top: 0;
+}
+
+
+/* Alerta */
+.alerta {
+    padding: 10px;
 }

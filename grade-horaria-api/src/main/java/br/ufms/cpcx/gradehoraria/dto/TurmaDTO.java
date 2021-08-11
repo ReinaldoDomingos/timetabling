@@ -21,4 +21,14 @@ public class TurmaDTO {
         this.codigo = turma.getCodigo();
         this.semestre = turma.getSemestre();
     }
+
+    public Turma getTurma() {
+        Turma turma = new Turma();
+        turma.setId(this.id);
+        turma.setNome(this.nome);
+        turma.setCodigo(this.codigo);
+        turma.setSemestre(this.semestre);
+
+        return turma;
+    }
 }

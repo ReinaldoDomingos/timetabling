@@ -10,3 +10,7 @@ function limparStringDaLista(texto) {
         .replaceAll(']', '')
         .replaceAll('\"', "");
 }
+
+function criarAlertaOptions() {
+    return {tipo: 'ERRO', mensagemAlerta: null};
+}

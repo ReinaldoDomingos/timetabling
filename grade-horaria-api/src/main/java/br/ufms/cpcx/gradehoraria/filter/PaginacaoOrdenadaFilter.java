@@ -35,7 +35,7 @@ public class PaginacaoOrdenadaFilter {
     private void setSort(Map<String, String> parametros) {
         String sortStr = getParametro(parametros, "sort");
         String direcaoStr = getParametro(parametros, "direcaoStr");
-        if(nonNull(sortStr)) {
+        if (nonNull(sortStr)) {
             List<Order> ordens = new ArrayList<>();
             for (String atributo : sortStr.split(",")) {
                 ordens.add(criarSortOrdem(atributo, direcaoStr));
@@ -45,11 +45,17 @@ public class PaginacaoOrdenadaFilter {
     }
 
     private void setPage(Map<String, String> parametros) {
-        this.page = Integer.parseInt(getParametro(parametros, "page"));
+        String page = getParametro(parametros, "page");
+        if (nonNull(page)) {
+            this.page = Integer.parseInt(page);
+        }
     }
 
     private void setSize(Map<String, String> parametros) {
-        this.size = Integer.parseInt(getParametro(parametros, "size"));
+        String size = getParametro(parametros, "size");
+        if (nonNull(size)) {
+            this.size = Integer.parseInt(size);
+        }
     }
 
     private String getParametro(Map<String, String> parametros, String chave) {

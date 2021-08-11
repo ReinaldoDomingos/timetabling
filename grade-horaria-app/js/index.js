@@ -1,4 +1,5 @@
-let URL_API = "http://localhost:8080/api";
+let URL_API = "http://localhost:8080/gradehoraria-api";
+
 new Vue({
     el: '#app',
     data: {
@@ -7,11 +8,11 @@ new Vue({
         professores: [],
         gradesHorarias: [],
         abaSelecionada: 'disciplinas',
-        abasMenu: constantes.ESQUEMAS.abasMenu,
-        colunasTurmas: constantes.ESQUEMAS.colunasTurmas,
-        colunasDisciplinas: constantes.ESQUEMAS.colunasDisciplinas,
-        colunasProfessores: constantes.ESQUEMAS.colunasProfessores,
-        colunasGradeHorarias: constantes.ESQUEMAS.colunasGradeHorarias,
+        abasMenu: constantes.ESQUEMAS.ABAS_MENU,
+        colunasTurmas: constantes.ESQUEMAS.COLUNAS_TURMAS,
+        colunasDisciplinas: constantes.ESQUEMAS.COLUNAS_DISCIPLINAS,
+        colunasProfessores: constantes.ESQUEMAS.COLUNAS_PROFESSORES,
+        colunasGradeHorarias: constantes.ESQUEMAS.COLUNAS_GRADE_HORARIAS,
         resultados: {
             carga: 0,
             ch_ufms: 3000,

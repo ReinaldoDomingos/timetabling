@@ -2,7 +2,7 @@ Vue.component('caixa-de-alerta', {
     props: ['titulo', 'alertaOptions'],
     template: `
     <div v-show="alertaOptions && alertaOptions.mensagemAlerta" 
-    v-bind:class="estiloClasses" class="alert alert-dismissible fade show" role="alert">
+    v-bind:class="estiloClasses" class="alerta alert alert-dismissible fade show" role="alert">
         <strong>{{getTitulo}}!</strong> {{alertaOptions.mensagemAlerta}}
         <span @click="fecharAlert" class="float-right">
             <i class="material-icons" >close</i>

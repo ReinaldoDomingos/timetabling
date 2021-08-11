@@ -1,7 +1,6 @@
 package br.ufms.cpcx.gradehoraria.controller;
 
-import br.ufms.cpcx.gradehoraria.dto.DisciplinaDTO;
-import br.ufms.cpcx.gradehoraria.exception.GenericException;
+import br.ufms.cpcx.gradehoraria.dto.DisciplinaGradeHorariaEdicaoDTO;
 import br.ufms.cpcx.gradehoraria.service.DisciplinaGradeHorariaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/disciplinaGradeHoraria")
+@RequestMapping("/gradehoraria-api/disciplinaGradeHoraria")
 public class DisciplinaGradeHorariaController {
 
     @Autowired
@@ -25,14 +24,12 @@ public class DisciplinaGradeHorariaController {
     @GetMapping
     @ResponseBody
     public ResponseEntity<?> buscar() {
-
         return new ResponseEntity<>(disciplinaGradeHorariaService.buscarTodos(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<?> buscarPorId(@PathVariable("id") Long id) {
-
         return new ResponseEntity<>(disciplinaGradeHorariaService.buscarPorId(id), HttpStatus.OK);
     }
 
@@ -46,11 +43,7 @@ public class DisciplinaGradeHorariaController {
 
     @PutMapping("{id}")
     @ResponseBody
-    public Object alterar(@PathVariable("id") Long id, @RequestBody DisciplinaDTO disciplinaGradeHoraria) {
-        try {
-            return new ResponseEntity<>(disciplinaGradeHorariaService.alterar(id, disciplinaGradeHoraria), HttpStatus.ACCEPTED);
-        } catch (GenericException exception) {
-            throw exception;
-        }
+    public Object alterar(@PathVariable("id") Long id, @RequestBody DisciplinaGradeHorariaEdicaoDTO disciplinaGradeHoraria) {
+        return new ResponseEntity<>(disciplinaGradeHorariaService.alterar(id, disciplinaGradeHoraria), HttpStatus.ACCEPTED);
     }
 }

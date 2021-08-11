@@ -50,13 +50,10 @@ Vue.component('caixa-de-numero', {
 Vue.component('titulo', {
     props: ['titulo', 'objeto', 'visualizando'],
     template: `
-        <div class="row">
-            <h4 class="titulo-secundario">
-                <span v-show="!visualizando && !objeto.id">Adicionar</span>
-                <span v-show="!visualizando && objeto.id">Editar</span>
-                <span v-show="visualizando">Visualizar</span>
-                {{titulo}}
-            </h4>
-        </div>
+     <h4 class="titulo-secundario">
+        <span v-show="!visualizando && objeto && !objeto.id">Adicionar</span>
+        <span v-show="!visualizando && objeto && objeto.id">Editar</span>
+        <span v-show="visualizando">Visualizar</span> {{titulo}}
+     </h4>
 `
 });

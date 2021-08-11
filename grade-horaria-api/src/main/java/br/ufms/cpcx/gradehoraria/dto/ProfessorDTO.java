@@ -19,4 +19,14 @@ public class ProfessorDTO {
         this.nome = professor.getNome();
         this.codigo = professor.getCodigo();
     }
+
+    public Professor getProfessor() {
+        Professor professor = new Professor();
+
+        professor.setId(this.id);
+        professor.setNome(this.nome);
+        professor.setCodigo(this.codigo);
+
+        return professor;
+    }
 }

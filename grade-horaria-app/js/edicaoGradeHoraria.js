@@ -1,4 +1,4 @@
-let URL_API = "http://localhost:8080/api";
+let URL_API = "http://localhost:8080/gradehoraria-api";
 
 new Vue({
     el: '#app',
@@ -7,7 +7,7 @@ new Vue({
         professores: [],
         gradeHoraria: {},
         visualizando: false,
-        alertaOptions: {tipo: 'ERRO', mensagemAlerta: null},
+        alertaOptions: criarAlertaOptions(),
         alertaDisciplinasOptions: {tipo: 'ERRO', mensagemAlerta: null},
         filters: getFilters(),
         disciplinaSelecionada: null,
@@ -90,7 +90,7 @@ new Vue({
             ];
             let self = this;
             if (self.isValidoFormulario(camposObrigatorios)) {
-                salvarRegistro(URL_API + '/gradeHoraria', self.gradeHoraria)
+                salvarRegistro(URL_API + '/gradeHoraria', this.gradeHoraria)
                     .then(function (response) {
                         if (!self.filters.id) {
                             location.search = '?id=' + response.data.id;
@@ -116,7 +116,7 @@ new Vue({
             let self = this;
             self.modalOptions.abrirModal();
             buscarRegistro(URL_API + '/gradeHoraria/gradeHorariaCompleta', self.filters.id)
-                .then(response => exportarXls('grade-horaria', response.data))
+                .then(response => exportarXls('Grade Horária', response.data))
                 .catch(response => self.alertaDisciplinasOptions.mensagemAlerta = getErroFormatado(response));
         },
         isValidoFormulario(campos) {

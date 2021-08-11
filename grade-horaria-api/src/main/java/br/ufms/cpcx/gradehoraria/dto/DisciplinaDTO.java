@@ -1,45 +1,33 @@
 package br.ufms.cpcx.gradehoraria.dto;
 
-import br.ufms.cpcx.gradehoraria.entity.DisciplinaGradeHoraria;
-import lombok.AllArgsConstructor;
+import br.ufms.cpcx.gradehoraria.entity.Disciplina;
 import lombok.Data;
 
-import static java.util.Objects.nonNull;
-
 @Data
-@AllArgsConstructor
 public class DisciplinaDTO {
-
     private Long id;
     private String nome;
     private String codigo;
-    private TurmaDTO turma;
     private Long cargaHoraria;
-    private ProfessorDTO professor;
-    private Boolean usaLaboratorio;
-    private Long cargaHorariaSemanal;
-    private Long idDisciplinaGradeHoraria;
 
     public DisciplinaDTO() {
     }
 
-    public DisciplinaDTO(DisciplinaGradeHoraria disciplinaGradeHoraria) {
-        this.id = disciplinaGradeHoraria.getDisciplina().getId();
-        this.nome = disciplinaGradeHoraria.getDisciplina().getNome();
-        this.idDisciplinaGradeHoraria = disciplinaGradeHoraria.getId();
-        this.codigo = disciplinaGradeHoraria.getDisciplina().getCodigo();
-        this.cargaHoraria = disciplinaGradeHoraria.getDisciplina().getCargaHoraria();
-        this.cargaHorariaSemanal = disciplinaGradeHoraria.getCargaHorariaSemanal();
-        this.usaLaboratorio = disciplinaGradeHoraria.getUsaLaboratorio();
+    public DisciplinaDTO(Disciplina disciplina) {
+        this.id = disciplina.getId();
+        this.nome = disciplina.getNome();
+        this.codigo = disciplina.getCodigo();
+        this.cargaHoraria = disciplina.getCargaHoraria();
+    }
 
-        if (nonNull(disciplinaGradeHoraria.getProfessor())) {
-            disciplinaGradeHoraria.getProfessor().getId();
-            this.professor = new ProfessorDTO(disciplinaGradeHoraria.getProfessor());
-        }
+    public Disciplina getDisciplina() {
+        Disciplina disciplina = new Disciplina();
 
-        if (nonNull(disciplinaGradeHoraria.getTurma())) {
-            disciplinaGradeHoraria.getTurma().getId();
-            this.turma = new TurmaDTO(disciplinaGradeHoraria.getTurma());
-        }
+        disciplina.setId(this.id);
+        disciplina.setNome(this.nome);
+        disciplina.setCodigo(this.codigo);
+        disciplina.setCargaHoraria(this.cargaHoraria);
+
+        return disciplina;
     }
 }
