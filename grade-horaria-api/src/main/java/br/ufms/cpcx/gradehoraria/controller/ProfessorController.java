@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -29,37 +28,31 @@ public class ProfessorController {
     private ProfessorService professorService;
 
     @GetMapping
-    @ResponseBody
     public Page<ProfessorDTO> buscar(@RequestParam Map<String, String> filters) {
         return professorService.buscarTodos(GenericFilter.of(filters));
     }
 
     @GetMapping("/todos")
-    @ResponseBody
     public List<ProfessorDTO> buscarTodos() {
         return professorService.buscarTodos();
     }
 
     @GetMapping("/{id}")
-    @ResponseBody
     public ProfessorDTO buscarPorId(@PathVariable("id") Long id) {
         return professorService.buscarPorId(id);
     }
 
     @PostMapping
-    @ResponseBody
     public ProfessorDTO salvar(@RequestBody ProfessorDTO professorDTO) {
         return professorService.salvar(professorDTO);
     }
 
     @DeleteMapping("{id}")
-    @ResponseBody
     public void deletar(@PathVariable("id") Long id) {
         professorService.deletar(id);
     }
 
     @PutMapping("{id}")
-    @ResponseBody
     public ProfessorDTO alterar(@PathVariable("id") Long id, @RequestBody ProfessorDTO professorDTO) {
         return professorService.alterar(id, professorDTO);
     }

@@ -7,23 +7,23 @@ Vue.component('grid', {
         <button v-show="funcaoEditar" @click="funcaoEditar()" class="btn btn-primary float-left" style="margin-bottom: 20px;">Adicionar</button>
         <div class="table-responsive-xl">
             <table class="table table-hover table-striped">
-                <tr>
+                <tr class="row">
                     <th v-for="atributo in atributos">{{atributo.titulo}}</th>
                     <th v-for="atributo in atributosSelecionaveis">{{atributo.titulo}}</th>
                     <th  v-show="!escoderBototes && atributos.length && (funcaoEditar || funcaoExcluir || isModoVisualizar)">Ações</th>
                 </tr>
-                <tr v-for="item in lista.content">
-                    <td v-for="atributo in atributos">
+                <tr class="row" v-for="item in lista.content">
+                    <td class="col" v-for="atributo in atributos">
                         <span v-show="!atributo.editavel">{{item[atributo.coluna]}}</span>
                         <caixa-de-numero v-show="atributo.editavel" :valor="item" :campo="atributo.coluna"></caixa-de-numero>
                     </td>
-                    <td v-for="atributo in atributosSelecionaveis">
+                    <td style="padding: 0" class="col" v-for="atributo in atributosSelecionaveis">
                         <caixa-de-selecao :on-selecionar="funcaoSalvar(item)" :valor="item" 
                               v-bind:campo="atributo.chaveObjeto" :lista="atributo.lista" 
                               chave-combo="this" campo-combo="nome">
                         </caixa-de-selecao>
                     </td>
-                    <td v-show="!escoderBototes && atributos.length && (funcaoEditar || funcaoExcluir || isModoVisualizar)">
+                    <td class="col" v-show="!escoderBototes && atributos.length && (funcaoEditar || funcaoExcluir || isModoVisualizar)">
                         <a v-show="isModoVisualizar" class="btn" @click="funcaoEditar(item.id, true)">
                             <i class="material-icons">visibility</i>
                         </a>

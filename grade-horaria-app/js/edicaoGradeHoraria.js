@@ -7,24 +7,21 @@ new Vue({
         professores: [],
         gradeHoraria: {},
         visualizando: false,
-        alertaOptions: criarAlertaOptions(),
-        alertaDisciplinasOptions: {tipo: 'ERRO', mensagemAlerta: null},
+        isModalAberto: false,
         filters: getFilters(),
-        disciplinaSelecionada: null,
+        colunasSelecionaveis: [],
         disciplinasGradeHoraria: [],
+        disciplinaSelecionada: null,
+        alertaOptions: criarAlertaOptions(),
         semestresDS: constantes.ENUMS.SEMESTRE,
+        alertaDisciplinasOptions: {tipo: 'ERRO', mensagemAlerta: null},
         modalOptions: {isModalAberto: false, titulo: 'Gerar Grade Horária'},
         restricoesCheckbox: [{titulo: 'Manter disciplina em dias alternados'}],
-        colunasDisciplinasGradeHoraria: constantes.ESQUEMAS.colunasDisciplinasGradeHoraria,
-        colunasSelecionaveis: [],
-        isModalAberto: false
+        colunasDisciplinasGradeHoraria: constantes.ESQUEMAS.colunasDisciplinasGradeHoraria
     },
     mounted() {
         if (this.filters.id) {
-            let self = this;
-            buscarRegistro(URL_API + '/gradeHoraria', this.filters.id).then(function (response) {
-                self.gradeHoraria = response.data;
-            });
+            this.buscarGradeHoraria();
             this.buscarDisciplinas();
             this.buscarProfessores();
             this.buscarDisciplinasGradeHoraria();
@@ -32,6 +29,11 @@ new Vue({
         }
     },
     methods: {
+        buscarGradeHoraria() {
+            let self = this;
+            buscarRegistro(URL_API + '/gradeHoraria', this.filters.id)
+                .then((response) => self.gradeHoraria = response.data);
+        },
         abrirModalGerarGradeHoraria() {
             this.modalOptions.abrirModal();
         },
@@ -88,6 +90,7 @@ new Vue({
                 {atributo: 'ano', titulo: 'ano'},
                 {atributo: 'semestreAno', titulo: 'semestre'}
             ];
+
             let self = this;
             if (self.isValidoFormulario(camposObrigatorios)) {
                 salvarRegistro(URL_API + '/gradeHoraria', this.gradeHoraria)
@@ -112,12 +115,13 @@ new Vue({
             buscarListagem(URL_API + '/gradeHoraria/' + this.filters.id + '/disciplinas', page ? page : 0, size ? size : 5)
                 .then(response => this.disciplinasGradeHoraria = response.data);
         },
-        buscarTodasDisciplinasGradeHoraria(page, size) {
+        gerarXLS() {
             let self = this;
             self.modalOptions.abrirModal();
             buscarRegistro(URL_API + '/gradeHoraria/gradeHorariaCompleta', self.filters.id)
                 .then(response => exportarXls('Grade Horária', response.data))
-                .catch(response => self.alertaDisciplinasOptions.mensagemAlerta = getErroFormatado(response));
+                .catch(response => self.alertaDisciplinasOptions.mensagemAlerta = getErroFormatado(response))
+                .finally(self.modalOptions.fecharModal);
         },
         isValidoFormulario(campos) {
             for (let indice in campos) {

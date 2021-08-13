@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -27,40 +26,34 @@ import java.util.Map;
 public class TurmaController {
 
     @Autowired
-    TurmaService turmaService;
+    private TurmaService turmaService;
 
     @GetMapping
-    @ResponseBody
     public Page<TurmaDTO> buscar(@RequestParam Map<String, String> filters) {
         return turmaService.buscarTodos(GenericFilter.of(filters));
     }
 
     @GetMapping("/todas")
-    @ResponseBody
     public List<Turma> buscarTodas() {
         return turmaService.buscarTodos();
     }
 
     @GetMapping("/{id}")
-    @ResponseBody
     public TurmaDTO buscarPorId(@PathVariable("id") Long id) {
         return turmaService.buscarPorId(id);
     }
 
     @PostMapping
-    @ResponseBody
     public TurmaDTO salvar(@RequestBody TurmaDTO turmaDTO) {
         return turmaService.salvar(turmaDTO);
     }
 
     @DeleteMapping("{id}")
-    @ResponseBody
     public void deletar(@PathVariable("id") Long id) {
         turmaService.deletar(id);
     }
 
     @PutMapping("{id}")
-    @ResponseBody
     public TurmaDTO alterar(@PathVariable("id") Long id, @RequestBody TurmaDTO turmaDTO) {
         return turmaService.alterar(id, turmaDTO);
     }

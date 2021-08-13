@@ -31,21 +31,24 @@ public class GradeHorariaService {
     }
 
     public GradeHorariaDTO salvar(GradeHorariaDTO gradeHorariaDTO) {
-        if (existeGradeHorariaIgual(gradeHorariaDTO.getGradeHoraria()))
+        if (existeGradeHorariaIgual(GradeHorariaDTO.toMapGradeHoraria(gradeHorariaDTO)))
             throw new GenericException("Grade Horária já existe.");
 
         return salvarGradeHoraria(gradeHorariaDTO);
     }
 
     public GradeHorariaDTO alterar(Long id, GradeHorariaDTO gradeHorariaDTO) {
-        if (!id.equals(gradeHorariaDTO.getId()))
+        GradeHoraria gradeHoraria = GradeHorariaDTO.toMapGradeHoraria(gradeHorariaDTO);
+
+        if (!id.equals(gradeHoraria.getId())) {
             throw new GenericException("Erro ao atualizar o registro.");
+        }
 
         return salvarGradeHoraria(gradeHorariaDTO);
     }
 
     private GradeHorariaDTO salvarGradeHoraria(GradeHorariaDTO gradeHoraria) {
-        GradeHoraria gradeHorariaSalva = gradeHorariaRepository.save(gradeHoraria.getGradeHoraria());
+        GradeHoraria gradeHorariaSalva = gradeHorariaRepository.save(GradeHorariaDTO.toMapGradeHoraria(gradeHoraria));
 
         return new GradeHorariaDTO(gradeHorariaSalva);
     }

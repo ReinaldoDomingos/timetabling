@@ -19,6 +19,7 @@
     <script src="components/buttons.js"></script>
     <script src="components/alert.js"></script>
     <script src="components/inputs.js"></script>
+    <script src="components/titulo.js"></script>
     <script src="js/constantes.js"></script>
     <script src="utils/erro-utils.js"></script>
 </head>
@@ -35,7 +36,7 @@
             </caixa-de-texto>
             <caixa-de-numero label="Carga Horária" :valor="disciplina"
                              campo="cargaHoraria" tipo="number"
-                             :visualizando="visualizando">
+                             :visualizando="visualizando" minimo="0">
             </caixa-de-numero>
         </div>
 

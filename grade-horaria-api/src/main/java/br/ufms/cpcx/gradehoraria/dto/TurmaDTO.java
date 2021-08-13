@@ -3,6 +3,7 @@ package br.ufms.cpcx.gradehoraria.dto;
 import br.ufms.cpcx.gradehoraria.entity.Turma;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.modelmapper.ModelMapper;
 
 @Data
 @AllArgsConstructor
@@ -22,13 +23,9 @@ public class TurmaDTO {
         this.semestre = turma.getSemestre();
     }
 
-    public Turma getTurma() {
-        Turma turma = new Turma();
-        turma.setId(this.id);
-        turma.setNome(this.nome);
-        turma.setCodigo(this.codigo);
-        turma.setSemestre(this.semestre);
+    public static Turma toMapTurma(TurmaDTO turmaDTO) {
+        ModelMapper mapper = new ModelMapper();
 
-        return turma;
+        return mapper.map(turmaDTO, Turma.class);
     }
 }

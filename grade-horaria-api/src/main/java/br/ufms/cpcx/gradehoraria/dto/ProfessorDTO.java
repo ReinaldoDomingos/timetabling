@@ -3,6 +3,7 @@ package br.ufms.cpcx.gradehoraria.dto;
 import br.ufms.cpcx.gradehoraria.entity.Professor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.modelmapper.ModelMapper;
 
 @Data
 @AllArgsConstructor
@@ -20,13 +21,32 @@ public class ProfessorDTO {
         this.codigo = professor.getCodigo();
     }
 
-    public Professor getProfessor() {
-        Professor professor = new Professor();
+    public Long getId() {
+        return id;
+    }
 
-        professor.setId(this.id);
-        professor.setNome(this.nome);
-        professor.setCodigo(this.codigo);
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-        return professor;
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Long getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(Long codigo) {
+        this.codigo = codigo;
+    }
+
+    public static Professor toMapProfessor(ProfessorDTO professorDTO) {
+        ModelMapper mapper = new ModelMapper();
+        return mapper.map(professorDTO, Professor.class);
     }
 }

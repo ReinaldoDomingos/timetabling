@@ -18,10 +18,11 @@
     <script src="components/inputs.js"></script>
     <script src="components/buttons.js"></script>
     <script src="components/grid.js"></script>
-    <script src="components/data-list.js"></script>
+    <script src="components/auto-complete.js"></script>
     <script src="components/alert.js"></script>
     <script src="components/modal.js"></script>
     <script src="components/multi-select.js"></script>
+    <script src="components/titulo.js"></script>
     <script src="js/constantes.js"></script>
 </head>
 <body>
@@ -32,12 +33,13 @@
         <titulo titulo="Grade Horária" :objeto="gradeHoraria" :visualizando="visualizando"></titulo>
         <div class="row">
             <caixa-de-numero label="Ano" :valor="gradeHoraria" campo="ano"
-                             :visualizando="visualizando"></caixa-de-numero>
+                             :visualizando="visualizando" minimo="0">
+            </caixa-de-numero>
 
             <div class="col-6">
                 <caixa-de-selecao label="Semestre" :valor="gradeHoraria" campo="semestreAno"
-                                  :visualizando="visualizando" :lista="semestresDS" chave-combo="chave"
-                                  campo-combo="valor">
+                                  :visualizando="visualizando" :lista="semestresDS"
+                                  chave-combo="chave" campo-combo="valor">
                 </caixa-de-selecao>
             </div>
 
@@ -53,7 +55,7 @@
         <titulo titulo="Lista de Disciplinas"></titulo>
         <div v-show="!visualizando" class="row">
             <div class="col-9">
-                <vue-data-list :options="disciplinas" v-model="disciplinaSelecionada"></vue-data-list>
+                <auto-complete :lista="disciplinas" v-model="disciplinaSelecionada"></auto-complete>
             </div>
             <div class="col-3">
                 <button type="submit" class="btn btn-success" @click="adicionarDisciplina">Adicionar</button>
@@ -78,7 +80,7 @@
     </div>
 
     <modal-selecionar-restricoes :options="modalOptions" :acoes-checkbox="restricoesCheckbox"
-                                 :funcao="buscarTodasDisciplinasGradeHoraria">
+                                 :funcao="gerarXLS">
     </modal-selecionar-restricoes>
 </div>
 

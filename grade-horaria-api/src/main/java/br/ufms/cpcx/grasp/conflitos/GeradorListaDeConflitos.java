@@ -237,7 +237,7 @@ public class GeradorListaDeConflitos {
 
     private String validarCargaHoraria(String valor) {
         if (isNull(valor) || valor.equals("null")) {
-            throw new GenericException("Preencha o campo Carga Horária.");
+            throw new GenericException("Preencha o campo C.H.S (Carga Horária Semanal).");
         }
         return valor;
     }

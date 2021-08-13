@@ -17,11 +17,12 @@ public interface DisciplinaGradeHorariaRepository extends JpaRepository<Discipli
             "LEFT JOIN FETCH dgh.gradeHoraria JOIN FETCH dgh.disciplina dis")
     List<DisciplinaGradeHoraria> buscarTodos();
 
-    @Query("SELECT dgh FROM DisciplinaGradeHoraria dgh WHERE dgh.gradeHoraria.id = ?1")
-    Page<DisciplinaGradeHorariaEdicaoDTO> findAllByGradeHorariaId(Long idGradeHoraria, Pageable pageable);
+    @Query("SELECT dgh FROM DisciplinaGradeHoraria dgh WHERE dgh.gradeHoraria.id = ?1 " +
+            "ORDER BY dgh.disciplina.nome")
+    Page<DisciplinaGradeHorariaEdicaoDTO> buscarPorGradeHorariaId(Long idGradeHoraria, Pageable pageable);
 
     @Query("SELECT dgh FROM DisciplinaGradeHoraria dgh WHERE dgh.gradeHoraria.id = ?1")
-    List<DisciplinaGradeHorariaEdicaoDTO> findAllByGradeHorariaId(Long idGradeHoraria);
+    List<DisciplinaGradeHorariaEdicaoDTO> buscarPorGradeHorariaId(Long idGradeHoraria);
 
     Boolean existsByGradeHorariaIdAndDisciplinaId(Long idDisciplina, Long idGradeHoraria);
 

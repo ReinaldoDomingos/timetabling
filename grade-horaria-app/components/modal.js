@@ -46,6 +46,7 @@ Vue.component('modal-selecionar-restricoes', {
         },
         fecharModal() {
             this.options.isModalAberto = false;
+            window.scrollTo(0, 10);
         }
     }
 });

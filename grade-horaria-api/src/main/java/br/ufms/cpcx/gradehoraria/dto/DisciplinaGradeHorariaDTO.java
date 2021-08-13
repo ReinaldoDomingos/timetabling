@@ -19,6 +19,9 @@ public class DisciplinaGradeHorariaDTO {
     private Long cargaHorariaSemanal;
     private GradeHoraria gradeHoraria;
 
+    public DisciplinaGradeHorariaDTO() {
+    }
+
     public DisciplinaGradeHorariaDTO(DisciplinaGradeHoraria disciplinaGradeHoraria) {
         this.id = disciplinaGradeHoraria.getId();
         this.gradeHoraria = disciplinaGradeHoraria.getGradeHoraria();

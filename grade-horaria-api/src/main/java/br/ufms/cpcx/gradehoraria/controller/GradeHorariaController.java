@@ -3,7 +3,7 @@ package br.ufms.cpcx.gradehoraria.controller;
 import br.ufms.cpcx.gradehoraria.dto.DisciplinaDTO;
 import br.ufms.cpcx.gradehoraria.dto.DisciplinaGradeHorariaEdicaoDTO;
 import br.ufms.cpcx.gradehoraria.dto.GradeHorariaDTO;
-import br.ufms.cpcx.gradehoraria.dto.GradeHorariaEdicaoDTO;
+import br.ufms.cpcx.gradehoraria.entity.GradeHoraria;
 import br.ufms.cpcx.gradehoraria.exception.GenericException;
 import br.ufms.cpcx.gradehoraria.filter.GenericFilter;
 import br.ufms.cpcx.gradehoraria.service.DisciplinaGradeHorariaService;
@@ -62,17 +62,19 @@ public class GradeHorariaController {
     }
 
     @GetMapping("/gradeHorariaCompleta/{id}")
-    public Map<String, String> gerarXLS(@PathVariable("id") Long id) throws Exception {
+    public Map gerarXLS(@PathVariable("id") Long id) throws Exception {
 
         String colunaDisciplina = "Disciplina";
         String colunaProfessor = "Professor";
         String colunaSemestre = "Semestre";
 
         List<String> colunasDisciplinasGradeHoraria = asList("Numero", colunaDisciplina, colunaProfessor, colunaSemestre, "CHS", "Laboratório");
-        GradeHorariaEdicaoDTO gradeHorariaEdicaoDTO = buscarGradeHorariaDTO(id);
+        GradeHorariaDTO gradeHorariaDTO = buscarPorId(id);
+        GradeHoraria gradeHoraria = GradeHorariaDTO.toMapGradeHoraria(gradeHorariaDTO);
+        List<DisciplinaGradeHorariaEdicaoDTO> disciplinaGradeHorariaEdicaoDTOS = buscarTodasDisciplinasPorGradeHorariaId(gradeHoraria.getId());
 
         AtomicInteger contador = new AtomicInteger();
-        List<String> disciplinasTabuladas = gradeHorariaEdicaoDTO.getDisciplinas().stream()
+        List<String> disciplinasTabuladas = disciplinaGradeHorariaEdicaoDTOS.stream()
                 .map(disciplinaDTO -> getDisciplinaString(contador, disciplinaDTO))
                 .collect(Collectors.toList());
 
@@ -119,8 +121,8 @@ public class GradeHorariaController {
         GradeHorariaPlanilha grade = new GradeHorariaPlanilha(grafo, grasp.getSolucaoGRASP().getEntidades(), restricoes.get(1), periodo);
         ExportarXLS exportarXLS = new ExportarXLS("Grade Horária disciplinas");
 
-        Map<String, List<String>> gradeHoraria = grade.gerarGradeHoraria(asList(colunaNomeEntidade, restricoes.get(0)));
-        exportarXLS.setDados(grade.getCabecalho(), grade.getHorarios(), gradeHoraria, periodo);
+        Map<String, List<String>> gradeHorariaGerada = grade.gerarGradeHoraria(asList(colunaNomeEntidade, restricoes.get(0)));
+        exportarXLS.setDados(grade.getCabecalho(), grade.getHorarios(), gradeHorariaGerada, periodo);
 
         int pagina = exportarXLS.adicionarPagina("Grade Horária professores");
         exportarXLS.setDados(pagina, grade.getCabecalho(), grade.getHorarios(), grade.gerarGradeHoraria(restricoes), periodo);
@@ -128,27 +130,13 @@ public class GradeHorariaController {
         return exportarXLS.exportarBase64();
     }
 
-    private GradeHorariaEdicaoDTO buscarGradeHorariaDTO(Long idGradeHoraria) {
-        GradeHorariaDTO gradeHoraria = gradeHorariaService.buscarPorId(idGradeHoraria);
-
-        GradeHorariaEdicaoDTO gradeHorariaEdicaoDTO = new GradeHorariaEdicaoDTO(gradeHoraria.getGradeHoraria());
-        gradeHorariaEdicaoDTO.setDisciplinas(getDisciplinasGradeHoraria(gradeHoraria));
-
-        return gradeHorariaEdicaoDTO;
-    }
-
-    private List<DisciplinaGradeHorariaEdicaoDTO> getDisciplinasGradeHoraria(GradeHorariaDTO gradeHoraria) {
-        return disciplinaGradeHorariaService.buscarTodasPorGradeHorariaId(gradeHoraria.getId());
+    public List<DisciplinaGradeHorariaEdicaoDTO> buscarTodasDisciplinasPorGradeHorariaId(Long IdGradeHoraria) {
+        return disciplinaGradeHorariaService.buscarTodasPorGradeHorariaId(IdGradeHoraria);
     }
 
     @GetMapping("/{id}/disciplinas")
     public Page<DisciplinaGradeHorariaEdicaoDTO> buscarDisciplinas(@PathVariable("id") Long id, @RequestParam Map<String, String> filters) {
         return disciplinaGradeHorariaService.buscarPorGradeHorariaId(GenericFilter.of(filters), id);
-    }
-
-    @GetMapping("/{id}/disciplinas/todas")
-    public List<DisciplinaGradeHorariaEdicaoDTO> buscarTodasDisciplinas(@PathVariable("id") Long id) {
-        return disciplinaGradeHorariaService.buscarTodasPorGradeHorariaId(id);
     }
 
     @PostMapping

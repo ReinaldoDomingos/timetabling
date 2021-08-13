@@ -1,49 +1,43 @@
 package br.ufms.cpcx.gradehoraria.controller;
 
+import br.ufms.cpcx.gradehoraria.dto.DisciplinaGradeHorariaDTO;
 import br.ufms.cpcx.gradehoraria.dto.DisciplinaGradeHorariaEdicaoDTO;
 import br.ufms.cpcx.gradehoraria.service.DisciplinaGradeHorariaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/gradehoraria-api/disciplinaGradeHoraria")
 public class DisciplinaGradeHorariaController {
 
     @Autowired
-    DisciplinaGradeHorariaService disciplinaGradeHorariaService;
+    private DisciplinaGradeHorariaService disciplinaGradeHorariaService;
 
     @GetMapping
-    @ResponseBody
-    public ResponseEntity<?> buscar() {
-        return new ResponseEntity<>(disciplinaGradeHorariaService.buscarTodos(), HttpStatus.OK);
+    public List<DisciplinaGradeHorariaDTO> buscarTodas() {
+        return disciplinaGradeHorariaService.buscarTodas();
     }
 
     @GetMapping("/{id}")
-    @ResponseBody
-    public ResponseEntity<?> buscarPorId(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(disciplinaGradeHorariaService.buscarPorId(id), HttpStatus.OK);
+    public DisciplinaGradeHorariaDTO buscarPorId(@PathVariable("id") Long id) {
+        return disciplinaGradeHorariaService.buscarPorId(id);
     }
 
     @DeleteMapping("{id}")
-    @ResponseBody
-    public ResponseEntity<?> deletar(@PathVariable("id") Long id) {
+    public void deletar(@PathVariable("id") Long id) {
         disciplinaGradeHorariaService.deletar(id);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("{id}")
-    @ResponseBody
-    public Object alterar(@PathVariable("id") Long id, @RequestBody DisciplinaGradeHorariaEdicaoDTO disciplinaGradeHoraria) {
-        return new ResponseEntity<>(disciplinaGradeHorariaService.alterar(id, disciplinaGradeHoraria), HttpStatus.ACCEPTED);
+    public DisciplinaGradeHorariaEdicaoDTO alterar(@PathVariable("id") Long id, @RequestBody DisciplinaGradeHorariaEdicaoDTO disciplinaGradeHoraria) {
+        return disciplinaGradeHorariaService.alterar(id, disciplinaGradeHoraria);
     }
 }

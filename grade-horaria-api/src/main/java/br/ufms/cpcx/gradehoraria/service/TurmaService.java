@@ -48,7 +48,7 @@ public class TurmaService {
     }
 
     private TurmaDTO salvarTurma(TurmaDTO turmaDTO) {
-        Turma turmaSalva = turmaRepository.save(turmaDTO.getTurma());
+        Turma turmaSalva = turmaRepository.save(TurmaDTO.toMapTurma(turmaDTO));
 
         return new TurmaDTO(turmaSalva);
     }

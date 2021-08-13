@@ -2,7 +2,6 @@ package br.ufms.cpcx.gradehoraria.controller;
 
 import br.ufms.cpcx.gradehoraria.GradeHorariaApplicationTest;
 import br.ufms.cpcx.gradehoraria.dto.DisciplinaDTO;
-import br.ufms.cpcx.gradehoraria.entity.Disciplina;
 import br.ufms.cpcx.gradehoraria.exception.GenericException;
 import br.ufms.cpcx.gradehoraria.filter.GenericFilter;
 import br.ufms.cpcx.gradehoraria.repository.DisciplinaRepository;
@@ -90,10 +89,10 @@ class DisciplinaControllerTest {
 
     @Test
     void alterarTest() {
-        when(disciplinaService.alterar(anyLong(), any(Disciplina.class))).thenReturn(new DisciplinaDTO());
+        when(disciplinaService.alterar(anyLong(), any(DisciplinaDTO.class))).thenReturn(new DisciplinaDTO());
 
-        Assertions.assertNotNull(disciplinaController.alterar(1L, new Disciplina()));
+        Assertions.assertNotNull(disciplinaController.alterar(1L, new DisciplinaDTO()));
 
-        verify(disciplinaService, times(1)).alterar(anyLong(), any(Disciplina.class));
+        verify(disciplinaService, times(1)).alterar(anyLong(), any(DisciplinaDTO.class));
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +28,9 @@ public class DisciplinaService {
     }
 
     public List<DisciplinaDTO> buscarTodas() {
-        return disciplinaRepository.findAll().stream().map(DisciplinaDTO::new).collect(Collectors.toList());
+        return disciplinaRepository.findAll().stream().map(DisciplinaDTO::new)
+                .sorted(Comparator.comparing(DisciplinaDTO::getNome))
+                .collect(Collectors.toList());
     }
 
     public Page<DisciplinaDTO> buscarTodas(GenericFilter filter) {
@@ -42,11 +45,11 @@ public class DisciplinaService {
         disciplinaRepository.deleteById(id);
     }
 
-    public DisciplinaDTO alterar(Long id, Disciplina disciplina) {
-        if (!id.equals(disciplina.getId()))
+    public DisciplinaDTO alterar(Long id, DisciplinaDTO disciplinaDTO) {
+        if (!id.equals(disciplinaDTO.getId()))
             throw new GenericException("Erro ao atualizar o registro.");
 
-        return salvarDisciplina(disciplina);
+        return salvarDisciplina(disciplinaDTO.getDisciplina());
     }
 
     private DisciplinaDTO salvarDisciplina(Disciplina disciplina) {

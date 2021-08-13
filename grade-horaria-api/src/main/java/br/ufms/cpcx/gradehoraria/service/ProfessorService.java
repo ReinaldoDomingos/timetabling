@@ -51,8 +51,8 @@ public class ProfessorService {
         return salvarProfessor(professorDTO);
     }
 
-    private ProfessorDTO salvarProfessor(ProfessorDTO professor) {
-        Professor professorSalvo = professorRepository.save(professor.getProfessor());
+    private ProfessorDTO salvarProfessor(ProfessorDTO professorDTO) {
+        Professor professorSalvo = professorRepository.save(ProfessorDTO.toMapProfessor(professorDTO));
 
         return new ProfessorDTO(professorSalvo);
     }
