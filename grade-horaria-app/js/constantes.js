@@ -12,26 +12,71 @@ var constantes = {
     },
     ESQUEMAS: {
         COLUNAS_DISCIPLINAS: [
-            {titulo: 'Código', coluna: 'codigo'},
-            {titulo: 'Nome', coluna: 'nome'},
+            {
+                classes: [],
+                coluna: 'codigo',
+                titulo: 'Código'
+            },
+            {
+                classes: [],
+                coluna: 'nome',
+                titulo: 'Nome'
+            },
             {titulo: 'C.H', coluna: 'cargaHoraria'}
         ],
         colunasDisciplinasGradeHoraria: [
-            {titulo: 'Nome', coluna: 'nome'},
-            {titulo: 'C.H', coluna: 'cargaHoraria'},
-            {titulo: 'C.H.S', coluna: 'cargaHorariaSemanal', editavel: true}
+            {
+                titulo: 'Nome',
+                coluna: 'nome',
+                classes: []
+            },
+            {
+                titulo: 'C.H',
+                classes: ['col-1'],
+                coluna: 'cargaHoraria'
+            },
+            {
+                editavel: true,
+                titulo: 'C.H.S',
+                classes: ['col-1'],
+                coluna: 'cargaHorariaSemanal'
+            }
         ],
         COLUNAS_PROFESSORES: [
-            {titulo: 'Código', coluna: 'id'},
-            {titulo: 'Nome', coluna: 'nome'}
+            {
+                classes: [],
+                coluna: 'id',
+                titulo: 'Código'
+            },
+            {
+                classes: [],
+                coluna: 'nome',
+                titulo: 'Nome'
+            }
         ],
         COLUNAS_GRADE_HORARIAS: [
-            {titulo: 'Ano', coluna: 'ano'},
-            {titulo: 'Semestre', coluna: 'semestreAno'}
+            {
+                classes: [],
+                titulo: 'Ano',
+                coluna: 'ano'
+            },
+            {
+                classes: [],
+                titulo: 'Semestre',
+                coluna: 'semestreAno'
+            }
         ],
         COLUNAS_TURMAS: [
-            {coluna: 'codigo', titulo: 'Código'},
-            {coluna: 'nome', titulo: 'Nome'},
+            {
+                classes: [],
+                coluna: 'codigo',
+                titulo: 'Código'
+            },
+            {
+                classes: [],
+                titulo: 'Nome',
+                coluna: 'nome'
+            },
             {coluna: 'semestre', titulo: 'Semestre'}
         ],
         ABAS_MENU: [

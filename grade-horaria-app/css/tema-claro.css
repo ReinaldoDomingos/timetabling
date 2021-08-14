@@ -1,3 +1,5 @@
+@import "css/grid.css";
+
 body {
     margin: 0;
     background-color: #f9f9f9 !important
@@ -116,15 +118,6 @@ body {
     margin-top: 0 !important;
 }
 
-/* Grid */
-.grid .caixa-de-selecao {
-    padding-left: 0;
-}
-
-.grid .caixa-de-numero {
-    padding: 0;
-}
-
 /* Modal */
 
 .modal-aberto {
@@ -160,8 +153,8 @@ body {
 }
 
 .caixa.grid .table .row .select.lista-select {
+    width: calc(100% - 25px);
     margin: auto;
-    width: 95%;
 }
 
 .select .label {

@@ -8,22 +8,27 @@ Vue.component('grid', {
         <div class="table-responsive-xl">
             <table class="table table-hover table-striped">
                 <tr class="row">
-                    <th v-for="atributo in atributos">{{atributo.titulo}}</th>
-                    <th v-for="atributo in atributosSelecionaveis">{{atributo.titulo}}</th>
-                    <th  v-show="!escoderBototes && atributos.length && (funcaoEditar || funcaoExcluir || isModoVisualizar)">Ações</th>
+                    <th v-if="atributos" v-bind:class="classesColuna(atributo)" v-for="(atributo, index) in atributos">{{atributo.titulo}}</th>
+                    <th v-if="atributos" v-bind:class="classesColuna(atributo)" v-for="(atributo, index) in atributosSelecionaveis">{{atributo.titulo}}</th>
+                    <th v-if="atributos" v-bind:class="classesColuna()"  
+                    v-show="!escoderBototes && atributos.length && (funcaoEditar || funcaoExcluir || isModoVisualizar)"
+                    class="acoes-grid text-center">
+                        Ações
+                    </th>
                 </tr>
                 <tr class="row" v-for="item in lista.content">
-                    <td class="col" v-for="atributo in atributos">
+                    <td v-bind:class="classesColuna(atributo)" v-for="atributo in atributos">
                         <span v-show="!atributo.editavel">{{item[atributo.coluna]}}</span>
                         <caixa-de-numero v-show="atributo.editavel" :valor="item" :campo="atributo.coluna"></caixa-de-numero>
                     </td>
-                    <td style="padding: 0" class="col" v-for="atributo in atributosSelecionaveis">
+                    <td v-bind:class="classesColuna(atributo)" class="text-left" v-for="atributo in atributosSelecionaveis">
                         <caixa-de-selecao :on-selecionar="funcaoSalvar(item)" :valor="item" 
                               v-bind:campo="atributo.chaveObjeto" :lista="atributo.lista" 
                               chave-combo="this" campo-combo="nome">
                         </caixa-de-selecao>
                     </td>
-                    <td class="col" v-show="!escoderBototes && atributos.length && (funcaoEditar || funcaoExcluir || isModoVisualizar)">
+                    <td v-bind:class="classesColuna()" v-show="!escoderBototes && atributos.length && (funcaoEditar || funcaoExcluir || isModoVisualizar)"
+                    class="acoes-grid">
                         <a v-show="isModoVisualizar" class="btn" @click="funcaoEditar(item.id, true)">
                             <i class="material-icons">visibility</i>
                         </a>
@@ -62,6 +67,21 @@ Vue.component('grid', {
 </div>
 `,
     methods: {
+        classesColuna(atributo, valorPadrao) {
+            let classes = {};
+            valorPadrao = atributo ? valorPadrao : 'col-1';
+            atributo = getValorOuValorPadrao(atributo, {});
+            console.log(atributo.classes)
+            valorPadrao = getValorOuValorPadrao(valorPadrao, 'col-2');
+            console.log(valorPadrao);
+            let valores = getValorOuValorPadrao(atributo.classes, [valorPadrao]);
+            console.log(valores);
+            valores.forEach((valor) => classes[valor] = true);
+            classes = isNotEmpty(valores) ? classes : {'col': true};
+            console.log(classes);
+            console.log('')
+            return classes;
+        },
         paginaAnterior() {
             if (this.lista.number > 0) {
                 this.funcao(this.lista.number - 1);

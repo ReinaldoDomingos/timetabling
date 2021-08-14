@@ -68,6 +68,7 @@ new Vue({
                 .then(response => self.professores = response.data)
                 .then(() => self.adicionarColunaSelecionavel({
                     coluna: 'nome',
+                    classes: ['col-3'],
                     titulo: 'Professor',
                     chaveObjeto: 'professor',
                     lista: self.professores
@@ -81,6 +82,7 @@ new Vue({
                 .then(() => self.adicionarColunaSelecionavel({
                     coluna: 'nome',
                     titulo: 'Turma',
+                    classes: ['col-3'],
                     chaveObjeto: 'turma',
                     lista: self.turmas
                 }));

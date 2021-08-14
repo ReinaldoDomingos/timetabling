@@ -1,0 +1,16 @@
+.grid .caixa-de-selecao {
+    padding-left: 0;
+}
+
+.grid .caixa-de-numero {
+    padding: 0;
+}
+
+.grid .acoes-grid {
+    text-align: center;
+    padding: 0;
+}
+
+.grid .acoes-grid .btn {
+    padding: 5px;
+}
