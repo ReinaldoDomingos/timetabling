@@ -5,8 +5,10 @@ Projeto para geração automática de grade horária universitária utilizando a
 - Coloração de vértices.
 
 Atualizações:
-- 14/08/2021: A parir de 15/08/2021 as novas atualizações desse projeto serão mantidas no seguinte repositório: 
+- 14/08/2021: A partir de 15/08/2021 as novas atualizações deste projeto serão mantidas no seguinte repositório: 
 [Link repositório no gitLab](https://gitlab.com/ReinaldoDomingos/grade-horaria).
+
+Link github: [Link repositório anterior](https://github.com/ReinaldoDomingos/timetabling).
 
 
 Mais sobre Grafos:</br>
